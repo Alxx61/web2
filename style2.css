@@ -1,0 +1,269 @@
+@font-face {
+    font-family: 'Outfit', sans-serif;
+    font-style: normal;
+    font-weight: 300;
+    src: local('Outfit'), local('Outfit-Regular'), url(https://fonts.gstatic.com/s/outfit/v13/QGd-Hb3540eDyv-K4XxT_vJyeV55daaZ5Jx4HFOeJYg.woff2) format('woff2');
+}
+
+@font-face {
+    font-family: 'Karla';
+    font-style: normal;
+    font-weight: 500;
+    src: local('Karla'), local('Karla-Regular'), url(https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap) format('woff2');
+}
+
+head {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    grid-template-rows: repeat(10, minmax(auto, 1fr));
+    grid-template-columns: repeat(15, minmax(auto, 1fr));
+    gap: 10px;
+    display: grid;
+    grid-gap: 10px;
+    background-color: #0a0a0a;
+    cursor: url('https://img.icons8.com/material-sharp/24/blue-pointer.png" alt="blue-pointer'), auto;
+}
+
+#bigone {
+    width: auto;
+    height: auto;
+}
+
+#heregoestime {
+    grid-area: 1 / 1 / 3 / 5;
+    padding: 10px;
+    margin: 25px;
+    font-family: Karla;
+    color: white;
+    margin-left: 60px;
+    font-size: 25px;
+
+}
+
+#bedrooms {
+    list-style: none;
+    grid-area: 1 / 5 / 10 / 12;
+    display: flex;
+    height: auto;
+    width: auto;
+    justify-content: space-between;
+    text-decoration: none;
+    margin-top: 40px;
+}
+
+#bedrooms a {
+    text-decoration: none;
+    font-family: Karla;
+    color: white;
+    font-size: 25px;
+    font-weight: 500;
+}
+
+#displayweather {
+    grid-area: 3 / 2 / 6 / 5;
+    border-radius: 20px;
+    padding: 30px;
+    opacity: 0.7;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+#weathernumber {
+    text-decoration: none;
+    font-family: Karla;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 100px;
+    margin-bottom: auto;
+}
+
+#weathertext {
+    text-decoration: none;
+    font-family: Karla;
+    color: rgb(255, 255, 255);
+    font-weight: 500;
+    font-size: 20px;
+}
+
+#cloud3D {
+    grid-area: 2 / 1 / 5 / 4;
+}
+
+#in {
+    grid-area: 3 / 10 / 5 / 13;
+    resize: none;
+    border-radius: 10px;
+    text-decoration: none;
+    background: inherit;
+    font-family: Karla;
+    background-color: #777777;
+}
+
+#status {
+    grid-area: 5 / 10 / 6 / 13;
+    font-family: Karla;
+    color: white;
+}
+
+#lightingpanel {
+    grid-area: 3 / 6 / 7 / 12;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px;
+    position:relative;
+    display: flex;
+    justify-content: right;
+    align-items: top;
+}
+
+#temperaturepanel {
+    grid-area: 2 / 12 / 10 / 16;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px;
+    position: relative;
+    display: flex;
+    justify-content: right;
+    align-items: top;
+}
+
+#wificontrol {
+    grid-area: 7 / 9 / 10 / 12;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px;
+    position: relative;
+    display: flex;
+    justify-content: right;
+    align-items: top;
+}
+
+#cameracontrol {
+    grid-area: 7 / 6 / 10 / 9;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px
+    
+}
+
+#vacumcontrol {
+    grid-area: 6 / 2 / 10 / 5;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px;
+    position: relative;
+    display: flex;
+    justify-content: right;
+    align-items: top;
+}
+
+.background-blurwifi {
+    position: absolute;
+    width: 30px; 
+    height: 30px;
+    background: #ff3333;
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: 0;
+    margin: 8px;
+    visibility:visible;
+
+}
+
+#buttonwifi {
+    position: absolute;
+    z-index: 1;
+    width: 25px; 
+    height: 25px;
+    border-radius: 50%;
+    margin: 10px;
+
+}
+
+
+.background-blurlight {
+    position: absolute;
+    width: 30px; 
+    height: 30px;
+    background: #ff3333;
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: 0;
+    margin: 8px;
+    visibility:visible;
+
+}
+
+#buttonlight {
+    position: absolute;
+    z-index: 1;
+    width: 25px; 
+    height: 25px;
+    border-radius: 50%;
+    margin: 10px;
+    transition: visibility 1000ms;
+
+
+}
+
+
+
+.background-blurtemp {
+    position: absolute;
+    width: 30px; 
+    height: 30px;
+    background: #ff3333;
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: 0;
+    margin: 8px;
+    visibility:visible;
+
+}
+
+#buttontemp {
+    position: absolute;
+    z-index: 1;
+    width: 25px; 
+    height: 25px;
+    border-radius: 50%;
+    margin: 10px;
+
+}
+
+
+.background-blurvacum {
+    position: absolute;
+    width: 30px; 
+    height: 30px;
+    background: #ff3333;
+    border-radius: 50%;
+    filter: blur(3px);
+    z-index: 0;
+    margin: 8px;
+    visibility:visible;
+
+}
+
+#buttonvacum {
+    position: absolute;
+    z-index: 1;
+    width: 25px; 
+    height: 25px;
+    border-radius: 50%;
+    margin: 10px;
+
+}
