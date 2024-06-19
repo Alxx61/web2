@@ -113,31 +113,43 @@ document.addEventListener("DOMContentLoaded", function() {
         if (isButtonOnlight) {
             backgroundBlur.style.display = 'none'; //false
             //this is to send the request to toggle it, above this is for the visual state change
+           
+            const targetUrl = 'http://localhost:30010/remote/object/call';
 
-            const url = 'http://localhost:8080/http://localhost:30010/remote/object/call';
-
+            // Define the proxy URL for CORS Anywhere
+            const proxyUrl = 'http://localhost:8080/';
+    
             const data = {
-        "objectPath": "/Temp/Untitled_1.Untitled_1:PersistentLevel.Light2_C_UAID_B42E99961B5FEC0002_1293197031",
-        "functionName": "Toggle",
-        "parameters": {}
-    };
-
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-    })
-
-
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+                "objectPath": "/Temp/Untitled_1.Untitled_1:PersistentLevel.Light2_C_UAID_B42E99961B5FEF0002_1932288559",
+                "functionName": "Toggle",
+                "parameters": {}
+            };
+    
+            // Use the proxy URL and append the target URL as a query parameter
+            fetch(proxyUrl + '?url=' + encodeURIComponent(targetUrl), {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // Change this line to get the raw response text
+            })
+            .then(text => {
+                try {
+                    const data = JSON.parse(text); // Attempt to parse the response as JSON
+                    console.log('Success:', data);
+                } catch (error) {
+                    console.error('Received invalid JSON:', text);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
 
 
         } else {
