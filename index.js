@@ -81,6 +81,11 @@ function weatherload(){
 ///buttons onwards of here
 //wifi button
 document.addEventListener("DOMContentLoaded", function() {
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const objectpath = "/Game/Untitled.Untitled:PersistentLevel.Light3_C_UAID_B42E99961B5F3C0102_2085930116"; /// HERE GOES OBJECT PATH FOR WIFI PANEL
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     const imgButton = document.getElementById('buttonwifi'); // Correctly selects the image acting as a button
     const backgroundBlur = document.querySelector('.background-blurwifi'); // Correctly selects the div with class "background-blur"
 
@@ -94,40 +99,45 @@ document.addEventListener("DOMContentLoaded", function() {
         } else {
             backgroundBlur.style.display = ''; // Reset to default display value
         }
-        isButtonOnwifi =!isButtonOnwifi;  // Toggle the state
+
+        
+
+        isButtonOnwifi = !isButtonOnwifi;  // Toggle the state
         console.log('WifiButton state:', isButtonOnwifi);
     }
 });
 
-//light button 
 
+
+//light button 
 document.addEventListener("DOMContentLoaded", function() {
-    const imgButton = document.getElementById('buttonlight'); // Correctly selects the image acting as a button
-    const backgroundBlur = document.querySelector('.background-blurlight'); // Correctly selects the div with class "background-blur"
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    const objectpath2 = "/Temp/Untitled_1.Untitled_1:PersistentLevel.Light1_C_UAID_B42E99961B5FE60402_1487855201"; /// HERE GOES OBJECT PATH FOR LIGHTING PANEL
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    const imgButton = document.getElementById('buttonlight'); // Assuming 'buttonlight' is the ID of your button image
+    const backgroundBlur = document.querySelector('.background-blurlight'); // Assuming 'background-blurlight' is the class of your background div
     
     let isButtonOnlight = true;
 
-    imgButton.addEventListener('click', toggleButton); // Attach event listener to the image
+    imgButton.addEventListener('click', toggleButton); // Attach event listener to the image button
 
     function toggleButton() {
         if (isButtonOnlight) {
-            backgroundBlur.style.display = 'none'; //false
-            //this is to send the request to toggle it, above this is for the visual state change
-           
-            const targetUrl = 'http://localhost:30010/remote/object/call';
+            backgroundBlur.style.display = 'none'; // Hide background (visual state change)
 
-            // Define the proxy URL for CORS Anywhere
-            const proxyUrl = 'http://localhost:8080/';
-    
+            // Define the target URL for Unreal Engine endpoint
+            // Construct the data payload for the POST request
             const data = {
-                "objectPath": "/Temp/Untitled_1.Untitled_1:PersistentLevel.Light2_C_UAID_B42E99961B5FEF0002_1932288559",
-                "functionName": "Toggle",
-                "parameters": {}
+                objectPath: objectpath2,
+                functionName: "Toggle",
+                parameters: {},
+                access: "WRITE_TRANSACTION_ACCESS"
             };
-    
-            // Use the proxy URL and append the target URL as a query parameter
-            fetch(proxyUrl + '?url=' + encodeURIComponent(targetUrl), {
-                method: 'POST',
+
+            fetch('http://localhost:30010/remote/object/call', {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
@@ -137,30 +147,50 @@ document.addEventListener("DOMContentLoaded", function() {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
                 }
-                return response.text(); // Change this line to get the raw response text
+                return response.json(); // Assuming response is JSON
             })
-            .then(text => {
-                try {
-                    const data = JSON.parse(text); // Attempt to parse the response as JSON
-                    console.log('Success:', data);
-                } catch (error) {
-                    console.error('Received invalid JSON:', text);
-                }
+            .then(jsonResponse => {
+                console.log('Success:', jsonResponse);
             })
-            .catch(error => {
-                console.error('Error:', error);
-            });
 
 
         } else {
-            backgroundBlur.style.display = ''; // Reset to default display value
+            backgroundBlur.style.display = ''; // Reset background to default state
+            // Construct the data payload for the POST request
+            const data = {
+                objectPath: objectpath2,
+                functionName: "Toggle",
+                parameters: {},
+                access: "WRITE_TRANSACTION_ACCESS"
+            };
+
+            fetch('http://localhost:30010/remote/object/call', {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json(); // Assuming response is JSON
+            })
+            .then(jsonResponse => {
+                console.log('Success:', jsonResponse);
+            })
+            isButtonOnlight = !isButtonOnlight;  // Toggle button state
+            console.log('Light Button state:', isButtonOnlight);
         }
 
-
-        isButtonOnlight =!isButtonOnlight;  // Toggle the state
-        console.log('Light Button state:', isButtonOnlight);
+        
     }
 });
+
+
+
+
 
 //temp button
 
