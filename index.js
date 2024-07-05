@@ -125,67 +125,50 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function toggleButton() {
         if (isButtonOnlight) {
+
             backgroundBlur.style.display = 'none'; // Hide background (visual state change)
 
-            // Define the target URL for Unreal Engine endpoint
-            // Construct the data payload for the POST request
+
             const data = {
-                objectPath: objectpath2,
                 functionName: "Toggle",
                 parameters: {},
                 access: "WRITE_TRANSACTION_ACCESS"
             };
 
-            fetch('http://localhost:30010/remote/object/call', {
+            fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // Assuming response is JSON
-            })
-            .then(jsonResponse => {
-                console.log('Success:', jsonResponse);
-            })
 
-
-        } else {
-            backgroundBlur.style.display = ''; // Reset background to default state
+        } 
+        else {
+            backgroundBlur.style.display = ''; // Reset to default display value
             // Construct the data payload for the POST request
             const data = {
-                objectPath: objectpath2,
                 functionName: "Toggle",
                 parameters: {},
                 access: "WRITE_TRANSACTION_ACCESS"
             };
 
-            fetch('http://localhost:30010/remote/object/call', {
+            fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(data)
             })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json(); // Assuming response is JSON
-            })
-            .then(jsonResponse => {
-                console.log('Success:', jsonResponse);
-            })
-            isButtonOnlight = !isButtonOnlight;  // Toggle button state
-            console.log('Light Button state:', isButtonOnlight);
+
         }
 
-        
+        isButtonOnlight = !isButtonOnlight;  // Toggle button state
+        console.log('Light Button state:', isButtonOnlight);
+
     }
+
+
 });
 
 
@@ -233,3 +216,103 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log('Vacuum Button state:', isButtonOnvacum);
     }
 });
+
+
+//color and intensity tryign
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const lightSlider = document.getElementById("lightSlider");
+    lightSlider.addEventListener("input", function() {
+        myFunction(this.value);
+    });
+
+    function myFunction(value) {
+    document.getElementById("sliderValue").innerHTML = "Intensity: " + value + "%";
+    updateIntensity(value)
+    console.log(value)
+     
+}
+
+function updateIntensity(value) {
+    const url = 'http://localhost:30010/remote/preset/Lightbool/property/Intensity';
+    const data = {
+        PropertyValue: Number(value*3),  
+        GenerateTransaction: true
+    };
+
+    fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    });
+}
+
+
+document.getElementById('myColorPicker').addEventListener('input', function() {
+    var hexColor = this.value;
+    var rgbValues = hexToRgb(hexColor);
+});
+
+// https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
+
+function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) {
+        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
+    }
+    var r = parseInt(hex.substr(0, 2), 16);
+    var g = parseInt(hex.substr(2, 2), 16);
+    var b = parseInt(hex.substr(4, 2), 16);
+    
+
+    fetch('http://localhost:30010/remote/preset/Lightbool/property/R', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            PropertyValue: Number(r),  
+            GenerateTransaction: true
+        })
+    });
+
+
+    fetch('http://localhost:30010/remote/preset/Lightbool/property/B', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            PropertyValue: Number(b),  
+            GenerateTransaction: true
+        })
+    });
+
+
+    fetch("http://localhost:30010/remote/preset/Lightbool/property/G", {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            PropertyValue: Number(g),  
+            GenerateTransaction: true
+        })
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+});
+

@@ -70,7 +70,7 @@ body {
 }
 
 #displayweather {
-    grid-area: 3 / 2 / 6 / 5;
+    grid-area: 3 / 1 / 6 / 5;
     border-radius: 20px;
     padding: 30px;
     opacity: 0.7;
@@ -79,6 +79,8 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
+    margin: 8px;
+    margin-left: 15px;
 }
 
 #weathernumber {
@@ -123,10 +125,11 @@ body {
     background-color: #777777;
     border-radius: 20px;
     margin: 10px;
-    position:relative;
-    display: flex;
-    justify-content: right;
-    align-items: top;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+    
+
 }
 
 #temperaturepanel {
@@ -138,6 +141,7 @@ body {
     display: flex;
     justify-content: right;
     align-items: top;
+    margin-right: 15px;
 }
 
 #wificontrol {
@@ -160,14 +164,16 @@ body {
 }
 
 #vacumcontrol {
-    grid-area: 6 / 2 / 10 / 5;
+    grid-area: 6 / 1 / 10 / 5;
     background-color: #777777;
     border-radius: 20px;
-    margin: 10px;
+    margin: 8px;
     position: relative;
     display: flex;
     justify-content: right;
     align-items: top;
+    margin-left: 15px;
+
 }
 
 .background-blurwifi {
@@ -195,7 +201,7 @@ body {
 
 
 .background-blurlight {
-    position: absolute;
+    position: relative;
     width: 30px; 
     height: 30px;
     background: #ff3333;
@@ -203,26 +209,30 @@ body {
     filter: blur(3px);
     z-index: 0;
     margin: 8px;
-    visibility:visible;
+    display: block;
+    grid-area: 1/7/2/8;
+    margin-top: 10px;
+    margin-left: 35px;
+
 
 }
 
 #buttonlight {
-    position: absolute;
+    position: relative;
     z-index: 1;
     width: 25px; 
     height: 25px;
     border-radius: 50%;
     margin: 10px;
-    transition: visibility 1000ms;
-
-
+    grid-area: 1/7/2/8;
+    margin-top: 13px;
+    margin-left: 38px;
 }
 
 
 
 .background-blurtemp {
-    position: absolute;
+    position: relative;
     width: 30px; 
     height: 30px;
     background: #ff3333;
@@ -230,12 +240,12 @@ body {
     filter: blur(3px);
     z-index: 0;
     margin: 8px;
-    visibility:visible;
+    display: block;
 
 }
 
 #buttontemp {
-    position: absolute;
+    position: relative;
     z-index: 1;
     width: 25px; 
     height: 25px;
@@ -246,7 +256,7 @@ body {
 
 
 .background-blurvacum {
-    position: absolute;
+    position: relative;
     width: 30px; 
     height: 30px;
     background: #ff3333;
@@ -259,11 +269,46 @@ body {
 }
 
 #buttonvacum {
-    position: absolute;
+    position: relative;
     z-index: 1;
     width: 25px; 
     height: 25px;
     border-radius: 50%;
     margin: 10px;
 
+}
+
+#lightSlider {
+    width: 50%;
+    margin-top: auto;
+    margin-right: auto;
+    grid-area: 7/1/8/6;
+    margin: 10px;
+    
+}
+
+#sliderValue {
+    display: block;
+    margin-top: 5px;
+    font-size: 1.2em;
+    text-align: center;
+    padding: 10px;
+    color: white;
+    font-family: "Karla";
+    grid-area: 3/6/9/8;
+
+}
+
+
+
+
+
+.lighttitle{
+
+    font-size: 20px;
+    font-family: "Karla";
+    color: white;
+    grid-area: 1/1/2/2;
+    margin: 10px;
+    margin-top: 20px;
 }
