@@ -138,9 +138,10 @@ body {
     border-radius: 20px;
     margin: 10px;
     position: relative;
-    display: flex;
-    justify-content: right;
-    align-items: top;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
+ 
     margin-right: 15px;
 }
 
@@ -169,9 +170,9 @@ body {
     border-radius: 20px;
     margin: 8px;
     position: relative;
-    display: flex;
-    justify-content: right;
-    align-items: top;
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-template-columns: repeat(7, 1fr);
     margin-left: 15px;
 
 }
@@ -241,6 +242,8 @@ body {
     z-index: 0;
     margin: 8px;
     display: block;
+    grid-area: 1/8/1/8;
+
 
 }
 
@@ -251,6 +254,8 @@ body {
     height: 25px;
     border-radius: 50%;
     margin: 10px;
+    grid-area: 1/8/1/8;
+
 
 }
 
@@ -265,6 +270,7 @@ body {
     z-index: 0;
     margin: 8px;
     visibility:visible;
+    grid-area: 1/8/1/8;
 
 }
 
@@ -275,6 +281,7 @@ body {
     height: 25px;
     border-radius: 50%;
     margin: 10px;
+    grid-area: 1/8/1/8;
 
 }
 
@@ -295,7 +302,7 @@ body {
     padding: 10px;
     color: white;
     font-family: "Karla";
-    grid-area: 3/6/9/8;
+    grid-area: 6/1/7/3;
 
 }
 
@@ -303,12 +310,117 @@ body {
 
 
 
-.lighttitle{
+.title{
 
     font-size: 20px;
     font-family: "Karla";
     color: white;
-    grid-area: 1/1/2/2;
+    grid-area: 1/1/1/3;
     margin: 10px;
     margin-top: 20px;
+    margin-left: 20px;
+    z-index: 2;
+    -webkit-user-drag: none
 }
+
+#batteryleft{
+
+    background-color: black;
+    grid-area: 4/2/7/5;
+    border-radius: 30px;
+    margin: 5px;
+
+
+}
+
+#timeleft{
+
+    background-color: black;
+    grid-area: 4/5/7/8;
+    border-radius: 30px;
+    margin: 5px;
+
+}
+
+#dockbutton{
+
+    background-color: black;
+    grid-area: 7/2/8/5;
+    border-radius: 20px;
+    margin: 5px;
+
+    
+    }
+
+#pushbutton{
+
+        background-color: black;
+        grid-area: 7/5/8/8;
+        border-radius: 20px;
+        margin: 5px;
+    
+        
+}
+
+.rs-control .rs-range-color {
+    background-color: #56bdff;
+}
+.rs-control .rs-path-color {
+    background-color: #ffffff;
+}
+.rs-control .rs-handle {
+    background-color: #1f283f;
+}
+.rs-control .rs-bg-color {
+    background-color: #ffffff;
+}
+
+.quickactions {
+	display: flex;
+	justify-content: center;
+	align-content: center;
+    grid-area: 5/1/7/9;
+}
+
+#fred{
+
+    background-color: black;
+    margin: 5px;
+    width: auto;
+    flex-grow: 1;
+    border-radius: 20px;
+}
+
+#calent{
+
+    background-color: black;
+    margin: 5px;
+    width: auto;
+    flex-grow: 1;
+    border-radius: 20px;
+
+
+}
+
+#ventilar{
+    background-color: black;
+    margin: 5px;
+    width: auto;
+    flex-grow: 1;
+    border-radius: 20px;
+
+
+
+}
+
+#picker {
+    grid-area: 2/6/6/8;
+    transform: translate(100px);
+    z-index: 0;
+    transition: transform 0.5s;
+  }
+  
+  #picker:hover {
+    transform: translate(calc(100px - 120px));
+  }
+

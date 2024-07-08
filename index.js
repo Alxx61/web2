@@ -7,6 +7,69 @@ document.addEventListener('DOMContentLoaded', function () {
     updateDateTime(); // call to set date
     getWeather();
 
+    //slider https://roundsliderui.com/
+
+    $("#slider").roundSlider({
+        sliderType: "min-range",
+        handleShape: "round",
+        width: 20,
+        radius: 116,
+        value: 32,
+        lineCap: "round",
+        min: "15",
+        max: "32",
+        startAngle: 170,
+        endAngle: "+200"
+    });
+    //color picker https://iro.js.org/guide.html
+    var colorPicker = new iro.ColorPicker("#picker", {
+        // Set the size of the color picker
+        width: 220,
+        // Set the initial color to pure red
+        color: "#c29c74"
+      });
+      colorPicker.on('color:change', function(color){
+        let r = color.red;
+        let g = color.green;
+        let b = color.blue;
+        console.log(`Red: ${r}, Green: ${g}, Blue: ${b}`); 
+    
+        fetch('http://localhost:30010/remote/preset/Lightbool/property/R', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                PropertyValue: Number(r),  
+                GenerateTransaction: true
+            })
+        });
+    
+        fetch('http://localhost:30010/remote/preset/Lightbool/property/B', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                PropertyValue: Number(b),  
+                GenerateTransaction: true
+            })
+        });
+    
+        fetch("http://localhost:30010/remote/preset/Lightbool/property/G", {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                PropertyValue: Number(g),  
+                GenerateTransaction: true
+            })
+        });
+    });
+      
+
+
 
 });
     
@@ -228,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     function myFunction(value) {
-    document.getElementById("sliderValue").innerHTML = "Intensity: " + value + "%";
+    document.getElementById("sliderValue").innerHTML = "Intensitat: " + value + "%";
     updateIntensity(value)
     console.log(value)
      
@@ -251,58 +314,8 @@ function updateIntensity(value) {
 }
 
 
-document.getElementById('myColorPicker').addEventListener('input', function() {
-    var hexColor = this.value;
-    var rgbValues = hexToRgb(hexColor);
-});
-
-// https://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
-
-function hexToRgb(hex) {
-    hex = hex.replace('#', '');
-    if (hex.length === 3) {
-        hex = hex[0] + hex[0] + hex[1] + hex[1] + hex[2] + hex[2];
-    }
-    var r = parseInt(hex.substr(0, 2), 16);
-    var g = parseInt(hex.substr(2, 2), 16);
-    var b = parseInt(hex.substr(4, 2), 16);
-    
-
-    fetch('http://localhost:30010/remote/preset/Lightbool/property/R', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            PropertyValue: Number(r),  
-            GenerateTransaction: true
-        })
-    });
 
 
-    fetch('http://localhost:30010/remote/preset/Lightbool/property/B', {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            PropertyValue: Number(b),  
-            GenerateTransaction: true
-        })
-    });
-
-
-    fetch("http://localhost:30010/remote/preset/Lightbool/property/G", {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            PropertyValue: Number(g),  
-            GenerateTransaction: true
-        })
-    });
-}
 
 
 
@@ -316,3 +329,22 @@ function hexToRgb(hex) {
 
 });
 
+//tab selector
+
+document.addEventListener('DOMContentLoaded', function() {
+    var currentPath = window.location.pathname;
+    var element1 = document.getElementById('el1');
+    var element2 = document.getElementById('el2');
+    var element3 = document.getElementById('el3');
+    var element4 = document.getElementById('el4');
+  
+    if (currentPath === '/C:/Users/bosch/Desktop/web2/index(3).html') {
+        element1.style.fontWeight = '1000'; 
+      } else if (currentPath === '/C:/Users/bosch/Desktop/web2/habitacio.html') {
+        element2.style.fontWeight = '1000'; 
+      }else if (currentPath === '/C:/Users/bosch/Desktop/web2/cuina.html') {
+        element3.style.fontWeight = '1000'; 
+      }else if (currentPath === '/C:/Users/bosch/Desktop/web2/oficina.html') {
+            element4.style.fontWeight = '1000'; 
+        }
+    });
