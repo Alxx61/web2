@@ -1,0 +1,89 @@
+.player {
+    background-color: #222;
+    border-radius: 15px;
+    overflow: hidden;
+    width: 300px;
+    color: white;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .player img {
+    width: 100%;
+    border-bottom: 1px solid #444;
+  }
+  .player .info {
+    padding: 15px;
+  }
+  .player .info h2 {
+    margin: 0;
+    font-size: 18px;
+  }
+  .player .info p {
+    margin: 5px 0 10px;
+    font-size: 14px;
+    color: #aaa;
+  }
+  .player .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    background-color: #111;
+  }
+  .player .controls button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+  }
+  .player .controls button:hover {
+    color: #1DB954;
+  }
+  .player .controls .play-pause {
+    font-size: 24px;
+  }    .player {
+      background-color: #222;
+      border-radius: 15px;
+      overflow: hidden;
+      width: 300px;
+      color: white;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .player img {
+      width: 100%;
+      border-bottom: 1px solid #444;
+    }
+    .player .info {
+      padding: 15px;
+    }
+    .player .info h2 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .player .info p {
+      margin: 5px 0 10px;
+      font-size: 14px;
+      color: #aaa;
+    }
+    .player .controls {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px;
+      background-color: #111;
+    }
+    .player .controls button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+    }
+    .player .controls button:hover {
+      color: #1DB954;
+    }
+    .player .controls .play-pause {
+      font-size: 24px;
+    }

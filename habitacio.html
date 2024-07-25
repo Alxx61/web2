@@ -20,11 +20,99 @@
         <li ><a id="el4" href="oficina.html">Oficina</a></li>
     </ul>
 
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="#">Control</a>
+        <a href="#">Consum</a>
+        <a href="#">Automatitzacions</a>
+        <a href="#">Contact</a>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
+
+
+    <div id="lightingpanel">
+        <h2 class="title" > Iluminació </h2>
+        <div class="background-blurlight"></div>
+    
+        <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
+        <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
+    
+        <input type="range" class="lightslider" id="lightSlider1" min="0" max="100" >
+            <span class="lightvalue" id="sliderValue1">Intensitat: 50%</span>
+    
+    
+        <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(114px);"></div>
+        <div id="picker"></div>
+    
+    
+    
+    
+    
+    </div>
+
+    <div id="blindpanel">
+        <h2 class="title">Cortines</h2>
+        <img height="auto" width="100%" src="https://i.imgur.com/uOhxK1u.png">
+        <input type="range" min="1" max="100" value="50" class="vertical-slider">    
+    </div>
+    
+
+    <div class="flex-devices">
+        <h2 class="title">Els meus dispositius</h2>
+        <div class="flex-itemsdevices">
+            <img height="50px" width="50px" src="https://img.icons8.com/ios-glyphs/30/laptop.png">
+            <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+        <div class="flex-itemsdevices">
+            <img height="50px" width="50px" src="https://img.icons8.com/ios/50/tv.png">
+            <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="flex-itemsdevices">
+            <img height="50px" width="50px" src="https://img.icons8.com/external-photo3ideastudio-lineal-photo3ideastudio/64/external-air-purifier-gadget-photo3ideastudio-lineal-photo3ideastudio.png">
+            <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
+        <div class="flex-itemsdevices">
+            <img height="50px" width="50px" src="https://img.icons8.com/ios/50/subwoofer.png">
+            <div class="onoffswitch">
+                <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="myonoffswitch" tabindex="0">
+                <label class="onoffswitch-label" for="myonoffswitch">
+                    <span class="onoffswitch-inner"></span>
+                    <span class="onoffswitch-switch"></span>
+                </label>
+            </div>
+        </div>
 
 
 
-
-
+    </div>
 
 
 

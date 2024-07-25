@@ -93,17 +93,8 @@ function formatDate(date) {
     return `${day}, ${month} ${dayOfMonth}`;
 }
 
-var tempCelsius;
-var feelsLikeCelsius;
-
-/*weather 
-Weather Library by Noah H. Smith
-- Source: https://github.com/noazark/weather/tree/0.1.0
-- License: MIT License (Copyright (c) 2012 Noah H. Smith)
-*/
-
 function getWeather() {
-    var apiKey = '2817f8fcf6361f5d6e39b993d2852890//';
+    var apiKey = '2817f8fcf6361f5d6e39b993d2852890'; // Ensure this is your valid API key
     var city = 'Puigcerda,ES';
     var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
@@ -115,29 +106,51 @@ function getWeather() {
             return response.json();
         })
         .then(data => {
-            // Convert temperature from Kelvin to Celsius
-            tempCelsius = data.main.temp - 273.15;
-            feelsLikeCelsius = data.main.feels_like - 273.15;
+            var tempCelsius = data.main.temp - 273.15; // Convert temperature from Kelvin to Celsius
+            var description = data.weather[0].description;
 
-            console.log(`${tempCelsius.toFixed(2)}°C`);
-            console.log(`${feelsLikeCelsius.toFixed(2)}°C`);
+            // Update temperature in weathernumber element
+            document.getElementById("weathernumber").innerHTML = Math.round(tempCelsius) + "&deg;C";
 
-            weatherload();
-            
-            
-
+            // Generate descriptive weather text based on conditions
+            var weatherText = generateWeatherText(description);
+            document.getElementById("weathertext").innerHTML = weatherText;
         })
         .catch(e => {
             console.log('There was a problem with the fetch operation: ' + e.message);
+            document.getElementById('weathernumber').innerHTML = 'N/A';
+            document.getElementById('weathertext').innerHTML = 'Unable to fetch weather data.';
         });
+}
 
+function generateWeatherText(description) {
+    //si inclou clear
+    if (description.toLowerCase().includes("clear")) {
+        document.getElementById(sun3D).display = ""
+        return "Avui el cel estarà cerè.";
+
+    }
+    //si inclou cloud
+    else if (description.toLowerCase().includes("cloud")) {
+        document.getElementById(cloud3D).display = ""
+        return "Avui el cel estarà ennuvolat.";
+
+    }
+    //si inclou pluja
+    else if (description.toLowerCase().includes("rain")) {
+        return "Avui probablement hi haurà precipitació.";
+    } 
+    // sino doncs aveure
+    else {
+        return description;
+    }
 }
 
 
-function weatherload(){
 
-    document.getElementById("weathernumber").innerHTML = Math.round(tempCelsius) + "&deg";
-};
+
+
+
 
 
 
@@ -281,7 +294,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-//color and intensity tryign
+//color and intensity 1
 
 
 document.addEventListener("DOMContentLoaded", function() {
@@ -347,4 +360,6 @@ document.addEventListener('DOMContentLoaded', function() {
       }else if (currentPath === '/C:/Users/bosch/Desktop/web2/oficina.html') {
             element4.style.fontWeight = '1000'; 
         }
+
+    
     });

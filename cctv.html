@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="index.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+
     <link rel="stylesheet" href="style2.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
@@ -12,51 +13,34 @@
     </style>
 </head>
 <body>
+    
     <ul id="bedrooms">
         <li ><a id="el1" href="index(3).html">Sala d'estar</a></li>
         <li ><a id="el2" href="habitacio.html">Habitació</a></li>
         <li ><a id="el3" href="cuina.html">Cuina</a></li>
         <li ><a id="el4" href="oficina.html">Oficina</a></li>
     </ul>
-    <div id="mySidenav" class="sidenav">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Control</a>
-        <a href="#">Consum</a>
-        <a href="#">Automatitzacions</a>
-        <a href="#">Contact</a>
-    </div>
-    <script>
-        function openNav() {
-            document.getElementById("mySidenav").style.width = "250px";
-        }
-
-        function closeNav() {
-            document.getElementById("mySidenav").style.width = "0";
-        }
-    </script>
-    <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    <video width="auto" height="auto" style="grid-area: 1/1/10/10;" id="video" controls></video>
+<script>
+    if (Hls.isSupported()) {
+        var video = document.getElementById('video');
+        var hls = new Hls();
+        hls.loadSource('http://localhost:8080/stream.m3u8');
+        hls.attachMedia(video);
+        hls.on(Hls.Events.MANIFEST_PARSED, function () {
+            video.play();
+        });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = 'http://localhost:8080/stream.m3u8';
+        video.addEventListener('canplay', function () {
+            video.play();
+        });
+    }
+</script>
 
 </body>
+
 </html>
+
