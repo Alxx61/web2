@@ -94,7 +94,7 @@ function formatDate(date) {
 }
 
 function getWeather() {
-    var apiKey = '2817f8fcf6361f5d6e39b993d2852890'; // Ensure this is your valid API key
+    var apiKey = '2817f8fcf6361f5d6e39b993d2852890//'; // Ensure this is your valid API key
     var city = 'Puigcerda,ES';
     var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
 
@@ -124,29 +124,34 @@ function getWeather() {
 }
 
 function generateWeatherText(description) {
-    //si inclou clear
+    var sun3DElement = document.getElementById("sun3D");
+    var cloud3DElement = document.getElementById("cloud3D");
+
+    // Hide both elements by default
+    if (sun3DElement) sun3DElement.style.display = "none";
+    if (cloud3DElement) cloud3DElement.style.display = "none";
+
+    // si inclou "clear"
     if (description.toLowerCase().includes("clear")) {
-        document.getElementById(sun3D).display = ""
+        if (sun3DElement) sun3DElement.style.display = "block";
         return "Avui el cel estarà cerè.";
-
     }
-    //si inclou cloud
+    // si inclou "cloud"
     else if (description.toLowerCase().includes("cloud")) {
-        document.getElementById(cloud3D).display = ""
+        if (cloud3DElement) cloud3DElement.style.display = "block";
         return "Avui el cel estarà ennuvolat.";
-
     }
-    //si inclou pluja
+    // si inclou "rain"
     else if (description.toLowerCase().includes("rain")) {
         return "Avui probablement hi haurà precipitació.";
-    } 
-    // sino doncs aveure
+    }
+    // Otherwise
     else {
         return description;
     }
 }
 
-
+window.onload = getWeather;
 
 
 
@@ -362,4 +367,82 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
     
+    });
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var ctx = document.getElementById('airQualityChart').getContext('2d');
+        var airQualityChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [{
+                    label: 'Air Quality Index',
+                    data: [],
+                    backgroundColor: 'rgba(0, 0, 0, 1)',
+                    borderColor: 'rgba(86, 179, 243, 0.68)',
+                    color: "white",
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Hora'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'IQA'
+                        },
+                        beginAtZero: true,
+                        suggestedMax: 500
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: true,
+                        position: 'top'
+                    }
+                },
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+    
+        function addData() {
+            var now = new Date();
+            var timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+    
+            // Generate a realistic AQI value (0-200, with some variability)
+            var baseAQI = 50 + Math.sin(now.getHours() / 24 * Math.PI * 2) * 30;
+            var randomVariation = Math.random() * 20 - 10;
+            var newAQI = Math.max(0, Math.min(200, Math.round(baseAQI + randomVariation)));
+    
+            airQualityChart.data.labels.push(timeString);
+            airQualityChart.data.datasets[0].data.push(newAQI);
+            console.log(newAQI)
+
+
+    
+            // Keep only the last 12 data points
+            if (airQualityChart.data.labels.length > 12) {
+                airQualityChart.data.labels.shift();
+                airQualityChart.data.datasets[0].data.shift();
+            }
+    
+            airQualityChart.update();
+            document.getElementById("airqualitynumber").innerHTML = "("+newAQI+")" 
+        }
+    
+        // Update every 1 seconds
+        setInterval(addData, 1000);
+    
+        // Initial data point
+        addData();
+        
     });

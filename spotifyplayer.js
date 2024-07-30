@@ -1,5 +1,5 @@
 window.onSpotifyWebPlaybackSDKReady = () => {
-    const token = 'BQCgHnwjDQ6T2PAeOuNiAeDilSA7ICAXBe_tj54tLLq5UfLOdgL0Oqmzb6jn52NXiXoV0gG7geIe4EgsrVy0VVHeviX02GGLJQwSc-7a6NfDpEUscGQMilnicr8Y9v58jkxEboZ6N4jUAc0I8UwmZaYuI_sWiCCrOpakwaOqCDgvYVuf0GkaToKSiutxUbLkMAlW9ZwCaxKn9dMS8BLF';
+    const token = 'BQCqCUXw2lKaSKr770-t4_mx94pw8EBVdbOaf-nDvjWVviJyXhfA4UulNF_spQvthdsqF9BKREE1mz87SaSM9gTvoRnVPulosOVly8EfGVEbv-NE7-wiHshMrdPylDmHhgaOm5FD6rYPwdGet8LlYC0jJhWVtfYFsiAURY_41EseRPuuqu5X3PtqTjEZl7I8BS2NHbzjtdSyQQHfo4Qa';
     const player = new Spotify.Player({
       name: 'Web Playback SDK Player',
       getOAuthToken: cb => { cb(token); },

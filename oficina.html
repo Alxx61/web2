@@ -2,21 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height," />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="index.js"></script>
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script src="spotifyplayer.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
+    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
+    <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+
     <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="spotifyplayer.css" />
+    <link rel="stylesheet" href="switch.css" />
+    <title>Oficina</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
     </style>
 </head>
 <body>
+    <h1 id="heregoestime">Error</h1>
     <ul id="bedrooms">
-        <li ><a id="el1" href="index(3).html">Sala d'estar</a></li>
-        <li ><a id="el2" href="habitacio.html">Habitació</a></li>
-        <li ><a id="el3" href="cuina.html">Cuina</a></li>
-        <li ><a id="el4" href="oficina.html">Oficina</a></li>
+        <li><a id="el1" href="index(3).html">Sala d'estar</a></li>
+        <li><a id="el2" href="habitacio.html">Habitació</a></li>
+        <li><a id="el3" href="cuina.html">Cuina</a></li>
+        <li><a id="el4" href="oficina.html">Oficina</a></li>
     </ul>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -29,21 +43,95 @@
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
         }
-
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
         }
     </script>
     <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
+    
+
+        <div class="flex-devices2">
+            <h2 class="title">Dispositius</h2>
+            <div class="device-item">
+                <img height="50px" width="50px" src="https://img.icons8.com/ios-glyphs/30/laptop.png">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="computerSwitch" tabindex="0">
+                    <label class="onoffswitch-label" for="computerSwitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="device-item">
+                <img height="50px" width="50px" src="https://img.icons8.com/sf-regular/48/printer-door-open.png">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="printerSwitch" tabindex="0">
+                    <label class="onoffswitch-label" for="printerSwitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+            <div class="device-item">
+                <img height="50px" width="50px" src="https://img.icons8.com/ios/50/fan.png">
+                <div class="onoffswitch">
+                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="fanSwitch" tabindex="0">
+                    <label class="onoffswitch-label" for="fanSwitch">
+                        <span class="onoffswitch-inner"></span>
+                        <span class="onoffswitch-switch"></span>
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="lightingpanel">
+        <h2 class="title" > Iluminació </h2>
+        <div class="background-blurlight"></div>
+    
+        <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
+        <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
+    
+        <input type="range" id="lightSlider" min="0" max="100" >
+            <span id="sliderValue">Intensitat: 50%</span>
+    
+    
+        <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(114px);"></div>
+        <div id="picker"></div>
+    
+    
+    
+    
+    
+    </div>
+    
+
+    <div id="blindpanel">
+        <h2 class="title">Cortines</h2>
+        <img height="auto" width="100%" src="https://i.imgur.com/uOhxK1u.png">
+        <input type="range" min="1" max="100" value="50" class="vertical-slider">
+    </div>
+
+    <div id="schedulerpanel">
+        <h2 class="title">Planificador de Reunions</h2>
+        <div class="background-blur"></div>
+        <div class="scheduler">
+            <input type="datetime-local" id="meetingTime" name="meetingTime">
+            <button id="scheduleMeeting">Programar</button>
+        </div>
+    </div>
 
 
-
-
-
-
-
-
-
+    <div id="airqualitypanel">
+        <h2 class="title">Qualitat de l'Aire</h2>
+        <div class="background-blur"></div>
+        <div class="airquality">
+            <img src="https://img.icons8.com/ios-filled/50/air-quality.png">
+            <span>Qualitat de l'aire: Bona <span id="airqualitynumber"> 23</span> </span>
+        </div>
+        <canvas width="100px" height="50px" style="grid-area: 4/4/7/7;" id="airQualityChart" ></canvas>
+       
+    </div>
 
 
 
