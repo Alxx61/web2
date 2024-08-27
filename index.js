@@ -446,3 +446,26 @@ document.addEventListener('DOMContentLoaded', function() {
         addData();
         
     });
+
+
+    //blind test
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const slider = document.getElementById('custom-slider');
+        const blind = document.getElementById('blind');
+        const image = document.getElementById('blindimage');
+        
+        function updateBlind() {
+            const imageHeight = image.clientHeight;
+            const blindHeight = (slider.value / 100) * imageHeight;
+            const blindTop = image.offsetTop + imageHeight - blindHeight;
+            blind.style.height = `${blindHeight}px`;
+            blind.style.top = `${blindTop}px`;
+            console.log(`Image Height: ${imageHeight}, Blind Height: ${blindHeight}, Blind Top: ${blindTop}`); // Debugging line
+        }
+
+        // Initial update after image is loaded
+        image.addEventListener('load', updateBlind);
+
+        // Update on slider input
+        slider.addEventListener('input', updateBlind);
+    });

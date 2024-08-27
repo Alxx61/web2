@@ -12,7 +12,6 @@
     <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
     <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
 
     <link rel="stylesheet" href="style2.css" />
@@ -108,8 +107,9 @@
 
     <div id="blindpanel">
         <h2 class="title">Cortines</h2>
-        <img height="auto" width="100%" src="https://i.imgur.com/uOhxK1u.png">
-        <input type="range" min="1" max="100" value="50" class="vertical-slider">
+        <img id="blindimage" height="auto" width="100%" src="https://i.imgur.com/uOhxK1u.png">
+        <input type="range" min="0" max="100" value="50" class="custom-vertical-slider" id="custom-slider">        
+        <div id="blind"></div>
     </div>
 
     <div id="schedulerpanel">

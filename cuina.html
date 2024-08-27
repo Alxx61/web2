@@ -12,9 +12,13 @@
     <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
     <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
+    <script src="blind.js"></script>
+
     <link rel="stylesheet" href="style2.css" />
     <link rel="stylesheet" href="spotifyplayer.css" />
     <link rel="stylesheet" href="switch.css" />
+    <link rel="stylesheet" href="blind.css" />
+
     <title>Cuina</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
@@ -46,44 +50,9 @@
     </script>
     <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
     
-    <div id="appliancespanel">
-        <h2 class="title">Electrodomèstics</h2>
-        <div class="background-blur"></div>
-        <div class="flex-items">
-            <div class="appliance-item">
-                <img height="50px" width="50px" src="https://img.icons8.com/ios/50/oven.png">
-                <div class="onoffswitch">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="ovenSwitch" tabindex="0">
-                    <label class="onoffswitch-label" for="ovenSwitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="appliance-item">
-                <img height="50px" width="50px" src="https://img.icons8.com/ios/50/fridge.png">
-                <div class="onoffswitch">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="fridgeSwitch" tabindex="0">
-                    <label class="onoffswitch-label" for="fridgeSwitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
-                </div>
-            </div>
-            <div class="appliance-item">
-                <img height="50px" width="50px" src="https://img.icons8.com/ios/50/dishwasher.png">
-                <div class="onoffswitch">
-                    <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="dishwasherSwitch" tabindex="0">
-                    <label class="onoffswitch-label" for="dishwasherSwitch">
-                        <span class="onoffswitch-inner"></span>
-                        <span class="onoffswitch-switch"></span>
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div id="lightingpanel">
+
+    <div id="lightingpanel" class="panel">
         <h2 class="title">Il·luminació</h2>
         <div class="background-blurlight"></div>
         <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
@@ -93,34 +62,21 @@
         <div id="picker"></div>
     </div>
 
-    <div id="temperaturepanel">
+    <div id="temperaturepanel" class="panel">
         <h2 class="title">Temperatura</h2>
-        <div class="background-blur"></div>
+        <div class="background-blurtemp"></div>
         <img id="buttontemp" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
-        <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
-        <input type="range" id="tempSlider" min="16" max="30">
-        <span id="tempValue">Temperatura: 22°C</span>
+        <img style="grid-area: 1/1/2/10; z-index: 1;" width="100%" height="170px" src="https://i.imgur.com/3O4SiCt.png">
+        <div style="grid-area: 1/2/3/4; z-index: 0; width: 100%; transform: translate(80px, 80px);" id="slider"></div>
+        <h3 class="title" style="grid-area: 4/1/5/5;">Accions ràpides</h3>
         <div class="quick-actions">
-            <button id="cold">Fred</button>
-            <button id="hot">Calent</button>
-            <button id="ventilate">Ventilar</button>
+            <div id="fred"></div>
+            <div id="calent"></div>
+            <div id="ventilar"></div>
         </div>
     </div>
 
-    <div id="musicpanel">
-        <h2 class="title">Control de Música</h2>
-        <div class="background-blur"></div>
-        <img id="buttonmusic" src="https://img.icons8.com/ios-filled/50/music.png">
-        <input type="range" id="volumeSlider" min="0" max="100">
-        <span id="volumeValue">Volum: 50%</span>
-        <div class="quick-actions">
-            <button id="play">Reproduir</button>
-            <button id="pause">Pausa</button>
-            <button id="next">Següent</button>
-        </div>
-    </div>
-
-    <div id="coffeemakerpanel">
+    <div id="coffeemakerpanel" class="panel">
         <h2 class="title">Cafetera</h2>
         <div class="background-blur"></div>
         <img id="buttoncoffee" src="https://img.icons8.com/ios-filled/50/coffee.png">
@@ -130,6 +86,61 @@
                 <span class="onoffswitch-inner"></span>
                 <span class="onoffswitch-switch"></span>
             </label>
+        </div>
+        <div class="coffee-settings">
+            <div class="setting">
+                <label for="brewTime">Hora de començament: </label>
+                <input type="time" id="brewTime" name="brewTime">
+            </div>
+            <div class="setting">
+                <label for="strength">Intensitat:</label>
+                <select id="strength" name="strength">
+                    <option value="light">Lleuger</option>
+                    <option value="medium">Mitjà</option>
+                    <option value="strong">Fort</option>
+                </select>
+            </div>
+            <div class="status">
+                <div id="waterLevel">Nivell d'aigua: 75%</div>
+                <div id="coffeeLevel">Nivell de cafè: 50%</div>
+                <div id="brewStatus">Estat: llest</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fridgepanel" class="panel">
+                <div class="background-blur"></div>
+
+        <div id="fridgetemp">Fridge Temp: 4°C</div>
+        <div id="fridgecontrols">
+            <button>Estableix la temperatura</button>
+            <button>Encendre la llum de la nevera</button>
+            <button>Apagar la llum de la nevera</button>
+        </div>
+    </div>
+
+    <div id="ovenpanel" >
+        <div class="background-blur"></div>
+
+        <div id="oventemp">Temperatura del forn: 180°C</div>
+        <div id="ovencontrols">
+            <button>Estableix la temperatura</button>
+            <button>Preescalfa</button>
+            <button>Comença a cuinar</button>
+            <button>Parar la cuina</button>
+            <button>Encendre la llum del forn</button>
+            <button>Apagar la llum del forn</button>
+        </div>
+    </div>
+
+    <div id="dishwasherpanel" class="panel">
+        <div class="background-blur"></div>
+
+        <div id="dishwasherstatus">Estat del rentavaixelles: Idle</div>
+        <div id="dishwashercontrols">
+            <button>Iniciar el rentat</button>
+            <button>Aturar el rentat</button>
+            <button>Assecar plats</button>
         </div>
     </div>
 </body>
