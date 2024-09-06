@@ -14,6 +14,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
     <script src="blind.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="style2.css" />
     <link rel="stylesheet" href="spotifyplayer.css" />
     <link rel="stylesheet" href="switch.css" />
@@ -31,7 +32,7 @@
         <li><a id="el1" href="index(3).html">Sala d'estar</a></li>
         <li><a id="el2" href="habitacio.html">Habitació</a></li>
         <li><a id="el3" href="cuina.html">Cuina</a></li>
-        <li><a id="el4" href="oficina.html">Oficina</a></li>
+        <li><a id="el4" href="bathroom.html">Lavabo</a></li>
     </ul>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -52,17 +53,19 @@
     
 
 
-    <div id="lightingpanel" class="panel">
+    <div id="lightingpanel" class="">
         <h2 class="title">Il·luminació</h2>
         <div class="background-blurlight"></div>
         <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
         <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
         <input type="range" id="lightSlider" min="0" max="100">
         <span id="sliderValue">Intensitat: 50%</span>
+        <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(113.5px);"></div>
+
         <div id="picker"></div>
     </div>
 
-    <div id="temperaturepanel" class="panel">
+    <div id="temperaturepanel" class="">
         <h2 class="title">Temperatura</h2>
         <div class="background-blurtemp"></div>
         <img id="buttontemp" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
@@ -76,9 +79,77 @@
         </div>
     </div>
 
+    <div id="fridgepanel" class="panel">
+        <h2 class="title">Nevera</h2>
+        <div class="status" id="fridgetemp">Temperatura: 4°C</div>
+        <div class="controls" id="fridgecontrols">
+            <button class="action-button">
+                <i class="fas fa-thermometer-half"></i>
+                <span>Estableix temperatura</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-lightbulb"></i>
+                <span>Encendre llum</span>
+            </button>
+            <button class="action-button">
+                <i class="far fa-lightbulb"></i>
+                <span>Apagar llum</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="ovenpanel" class="panel">
+        <h2 class="title">Forn</h2>
+        <div class="status" id="oventemp">Temperatura: 180°C</div>
+        <div class="controls" id="ovencontrols">
+            <button class="action-button">
+                <i class="fas fa-thermometer-half"></i>
+                <span>Estableix temperatura</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-fire"></i>
+                <span>Preescalfa</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-play"></i>
+                <span>Comença a cuinar</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-stop"></i>
+                <span>Parar la cuina</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-lightbulb"></i>
+                <span>Encendre llum</span>
+            </button>
+            <button class="action-button">
+                <i class="far fa-lightbulb"></i>
+                <span>Apagar llum</span>
+            </button>
+        </div>
+    </div>
+
+    <div id="dishwasherpanel" class="panel">
+        <h2 class="title">Rentavaixelles</h2>
+        <div class="status" id="dishwasherstatus">Estat: Idle</div>
+        <div class="controls" id="dishwashercontrols">
+            <button class="action-button">
+                <i class="fas fa-play"></i>
+                <span>Iniciar rentat</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-stop"></i>
+                <span>Aturar rentat</span>
+            </button>
+            <button class="action-button">
+                <i class="fas fa-wind"></i>
+                <span>Assecar plats</span>
+            </button>
+        </div>
+    </div>
+
     <div id="coffeemakerpanel" class="panel">
         <h2 class="title">Cafetera</h2>
-        <div class="background-blur"></div>
         <img id="buttoncoffee" src="https://img.icons8.com/ios-filled/50/coffee.png">
         <div class="onoffswitch">
             <input type="checkbox" name="onoffswitch" class="onoffswitch-checkbox" id="coffeeSwitch" tabindex="0">
@@ -105,42 +176,6 @@
                 <div id="coffeeLevel">Nivell de cafè: 50%</div>
                 <div id="brewStatus">Estat: llest</div>
             </div>
-        </div>
-    </div>
-
-    <div id="fridgepanel" class="panel">
-                <div class="background-blur"></div>
-
-        <div id="fridgetemp">Fridge Temp: 4°C</div>
-        <div id="fridgecontrols">
-            <button>Estableix la temperatura</button>
-            <button>Encendre la llum de la nevera</button>
-            <button>Apagar la llum de la nevera</button>
-        </div>
-    </div>
-
-    <div id="ovenpanel" >
-        <div class="background-blur"></div>
-
-        <div id="oventemp">Temperatura del forn: 180°C</div>
-        <div id="ovencontrols">
-            <button>Estableix la temperatura</button>
-            <button>Preescalfa</button>
-            <button>Comença a cuinar</button>
-            <button>Parar la cuina</button>
-            <button>Encendre la llum del forn</button>
-            <button>Apagar la llum del forn</button>
-        </div>
-    </div>
-
-    <div id="dishwasherpanel" class="panel">
-        <div class="background-blur"></div>
-
-        <div id="dishwasherstatus">Estat del rentavaixelles: Idle</div>
-        <div id="dishwashercontrols">
-            <button>Iniciar el rentat</button>
-            <button>Aturar el rentat</button>
-            <button>Assecar plats</button>
         </div>
     </div>
 </body>

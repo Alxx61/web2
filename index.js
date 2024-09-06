@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     updateDateTime(); // call to set date
     getWeather();
 
-    //slider https://roundsliderui.com/
+    //lliscador https://roundsliderui.com/
 
     $("#slider").roundSlider({
         sliderType: "min-range",
@@ -21,14 +21,24 @@ document.addEventListener('DOMContentLoaded', function () {
         startAngle: 170,
         endAngle: "+200"
     });
-    //color picker https://iro.js.org/guide.html
+    //selector de color https://iro.js.org/guide.html
     var colorPicker = new iro.ColorPicker("#picker", {
-        // Set the size of the color picker
+        // estableix la mida del selector de color
         width: 220,
-        // Set the initial color to pure red
+        // estableix el color inicial a vermell pur
         color: "#c29c74"
-      });
-      colorPicker.on('color:change', function(color){
+    });
+
+    let alertShown = false;
+
+    document.getElementById('picker').addEventListener('mouseover', function() {
+        if (!alertShown) {
+            //alert("Siusplau, no arrossegueu el color, genera moltes transaccions");            alertShown = true;
+        }
+    }, { once: true });
+
+    colorPicker.on('color:change', function(color){
+
         let r = color.red;
         let g = color.green;
         let b = color.blue;
@@ -163,9 +173,7 @@ window.onload = getWeather;
 //wifi button
 document.addEventListener("DOMContentLoaded", function() {
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const objectpath = "/Game/Untitled.Untitled:PersistentLevel.Light3_C_UAID_B42E99961B5F3C0102_2085930116"; /// HERE GOES OBJECT PATH FOR WIFI PANEL
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     const imgButton = document.getElementById('buttonwifi'); // Correctly selects the image acting as a button
     const backgroundBlur = document.querySelector('.background-blurwifi'); // Correctly selects the div with class "background-blur"
@@ -192,64 +200,27 @@ document.addEventListener("DOMContentLoaded", function() {
 
 //light button 
 document.addEventListener("DOMContentLoaded", function() {
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    const objectpath2 = "/Temp/Untitled_1.Untitled_1:PersistentLevel.Light1_C_UAID_B42E99961B5FE60402_1487855201"; /// HERE GOES OBJECT PATH FOR LIGHTING PANEL
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    const imgButton = document.getElementById('buttonlight'); // Assuming 'buttonlight' is the ID of your button image
-    const backgroundBlur = document.querySelector('.background-blurlight'); // Assuming 'background-blurlight' is the class of your background div
+    const imgButton = document.getElementById('buttonlight');
+    const backgroundBlur = document.querySelector('.background-blurlight');
     
-    let isButtonOnlight = true;
-
-    imgButton.addEventListener('click', toggleButton); // Attach event listener to the image button
+    imgButton.addEventListener('click', toggleButton);
 
     function toggleButton() {
-        if (isButtonOnlight) {
-
-            backgroundBlur.style.display = 'none'; // Hide background (visual state change)
-
-
-            const data = {
-                functionName: "Toggle",
-                parameters: {},
-                access: "WRITE_TRANSACTION_ACCESS"
-            };
-
-            fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
+        fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Parameters: {},
+                GenerateTransaction: true
             })
-
-        } 
-        else {
-            backgroundBlur.style.display = ''; // Reset to default display value
-            // Construct the data payload for the POST request
-            const data = {
-                functionName: "Toggle",
-                parameters: {},
-                access: "WRITE_TRANSACTION_ACCESS"
-            };
-
-            fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-
-        }
-
-        isButtonOnlight = !isButtonOnlight;  // Toggle button state
-        console.log('Light Button state:', isButtonOnlight);
-
+        })
+        .then(response => response.ok ? response.json() : Promise.reject(`HTTP error! status: ${response.status}`))
+        .then(() => {
+            backgroundBlur.style.display = backgroundBlur.style.display === 'none' ? '' : 'none';
+            console.log('Living room light Button state:', backgroundBlur.style.display !== 'none');
+        })
+        .catch(error => console.error('Error:', error));
     }
-
-
 });
 
 
@@ -370,82 +341,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var ctx = document.getElementById('airQualityChart').getContext('2d');
-        var airQualityChart = new Chart(ctx, {
-            type: 'line',
-            data: {
-                labels: [],
-                datasets: [{
-                    label: 'Air Quality Index',
-                    data: [],
-                    backgroundColor: 'rgba(0, 0, 0, 1)',
-                    borderColor: 'rgba(86, 179, 243, 0.68)',
-                    color: "white",
-                    borderWidth: 4
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: 'Hora'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'IQA'
-                        },
-                        beginAtZero: true,
-                        suggestedMax: 500
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'top'
-                    }
-                },
-                responsive: true,
-                maintainAspectRatio: false
-            }
-        });
-    
-        function addData() {
-            var now = new Date();
-            var timeString = now.getHours().toString().padStart(2, '0') + ':' + 
-                             now.getMinutes().toString().padStart(2, '0');
-    
-            // Generate a realistic AQI value (0-200, with some variability)
-            var baseAQI = 50 + Math.sin(now.getHours() / 24 * Math.PI * 2) * 30;
-            var randomVariation = Math.random() * 20 - 10;
-            var newAQI = Math.max(0, Math.min(200, Math.round(baseAQI + randomVariation)));
-    
-            airQualityChart.data.labels.push(timeString);
-            airQualityChart.data.datasets[0].data.push(newAQI);
-            console.log(newAQI)
 
-
-    
-            // Keep only the last 12 data points
-            if (airQualityChart.data.labels.length > 12) {
-                airQualityChart.data.labels.shift();
-                airQualityChart.data.datasets[0].data.shift();
-            }
-    
-            airQualityChart.update();
-            document.getElementById("airqualitynumber").innerHTML = "("+newAQI+")" 
-        }
-    
-        // Update every 1 seconds
-        setInterval(addData, 1000);
-    
-        // Initial data point
-        addData();
-        
-    });
 
 
     //blind test
@@ -469,3 +365,157 @@ document.addEventListener('DOMContentLoaded', function() {
         // Update on slider input
         slider.addEventListener('input', updateBlind);
     });
+
+
+//grafic humitat
+document.addEventListener('DOMContentLoaded', function() {
+    var ctx = document.getElementById('humidityChart').getContext('2d');
+    var humidityChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Humidity',
+                data: [],
+                backgroundColor: 'rgba(0, 0, 0, 1)',
+                borderColor: 'rgba(0, 255, 0, 0.68)',
+                color: "white",
+                borderWidth: 4
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Hora'
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Humitat (%)'
+                    },
+                    beginAtZero: true,
+                    suggestedMax: 100
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
+                }
+            },
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    let lastHumidity = 55; // Starting humidity
+
+    function addData() {
+        var now = new Date();
+        var timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                         now.getMinutes().toString().padStart(2, '0');
+
+        // Generate a more realistic humidity value
+        var baseHumidity = 55 + Math.sin(now.getHours() / 24 * Math.PI * 2) * 15;
+        var randomVariation = Math.random() * 2 - 1; // Smaller variation
+        var newHumidity = Math.max(30, Math.min(80, lastHumidity + randomVariation));
+        
+        // Gradually move towards the base humidity
+        newHumidity = newHumidity + (baseHumidity - newHumidity) * 0.1;
+        
+        newHumidity = Math.round(newHumidity); // Round to one decimal place
+        lastHumidity = newHumidity;
+
+        humidityChart.data.labels.push(timeString);
+        humidityChart.data.datasets[0].data.push(newHumidity);
+
+        // Keep only the last 12 data points
+        if (humidityChart.data.labels.length > 12) {
+            humidityChart.data.labels.shift();
+            humidityChart.data.datasets[0].data.shift();
+        }
+
+        humidityChart.update();
+        document.getElementById("humiditydisplay").querySelector("div").innerHTML = newHumidity.toFixed() + "%";
+    }
+
+    // Update every 5 seconds
+    setInterval(addData, 5000);
+
+    // Initial data point
+    addData();
+});
+
+
+// Add functionality to sliders and improve styling
+document.addEventListener('DOMContentLoaded', function() {
+    // Bath temperature slider
+    const bathTempSlider = document.querySelector('#bathpanel input[type="range"]');
+    const bathTempDisplay = document.getElementById('bathTemp');
+    
+    bathTempSlider.addEventListener('input', function() {
+        bathTempDisplay.textContent = this.value + '°C';
+    });
+
+    // Shower temperature slider
+    const showerTempSlider = document.querySelector('#showerpanel input[type="range"]:first-of-type');
+    const showerTempDisplay = document.getElementById('showerTemp');
+    
+    showerTempSlider.addEventListener('input', function() {
+        showerTempDisplay.textContent = this.value + '°C';
+    });
+
+    // Shower pressure slider
+    const showerPressureSlider = document.getElementById('showerPressureSlider');
+    const showerPressureDisplay = document.getElementById('showerPressure');
+    
+    showerPressureSlider.addEventListener('input', function() {
+        const pressureValue = parseInt(this.value);
+        let displayValue;
+        switch(pressureValue) {
+            case 1: displayValue = 'Molt suau'; break;
+            case 2: displayValue = 'Suau'; break;
+            case 3: displayValue = 'Normal'; break;
+            case 4: displayValue = 'Forta'; break;
+            case 5: displayValue = 'Molt forta'; break;
+            default: displayValue = 'Normal';
+        }
+        showerPressureDisplay.textContent = displayValue;
+    });
+
+    // Trigger the input event initially to set the correct value
+    showerPressureSlider.dispatchEvent(new Event('input'));
+
+    // Styling improvements
+    const sliders = document.querySelectorAll('input[type="range"]');
+    sliders.forEach(slider => {
+        slider.style.webkitAppearance = 'none';
+        slider.style.appearance = 'none';
+        slider.style.height = '10px';
+        slider.style.background = '#d3d3d3';
+        slider.style.outline = 'none';
+        slider.style.opacity = '0.7';
+        slider.style.transition = 'opacity .2s';
+        slider.style.borderRadius = '5px';
+    });
+
+    const buttons = document.querySelectorAll('button');
+    buttons.forEach(button => {
+        button.style.transition = 'background-color 0.3s, transform 0.1s';
+        button.addEventListener('mouseover', function() {
+            this.style.backgroundColor = '#555';
+        });
+        button.addEventListener('mouseout', function() {
+            this.style.backgroundColor = '#444';
+        });
+        button.addEventListener('mousedown', function() {
+            this.style.transform = 'scale(0.98)';
+        });
+        button.addEventListener('mouseup', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lavabo</title>
+    <link rel="stylesheet" href="style2.css" />
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
+    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
+    <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="index.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+    </style>
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index(3).html">Control</a>
+        <a href="#">Consum</a>
+        <a href="#">Automatitzacions</a>
+        <a href="cctv.html">Videovigilància</a>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
+
+    <h1 id="heregoestime"></h1>
+
+    <ul id="bedrooms">
+        <li><a id="el1" href="index(3).html">Sala d'estar</a></li>
+        <li><a id="el2" href="habitacio.html">Habitació</a></li>
+        <li><a id="el3" href="cuina.html">Cuina</a></li>
+        <li><a id="el4" href="bathroom.html">Lavabo</a></li>
+    </ul>
+
+    <div id="lightingpanel">
+        <h2 class="title">Il·luminació</h2>
+        <div class="background-blurlight"></div>
+        <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2" style="width: 25px; height: 25px; border-radius: 50%; margin: 13px 0 0 38px; grid-area: 1/7/2/8; z-index: 1;">
+        <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
+        <input type="range" id="lightSlider" min="0" max="100">
+        <span id="sliderValue">Intensitat: 50%</span>
+        <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(113.5px);"></div>
+
+        <div id="picker"></div>
+    </div>
+
+    <div id="temperaturepanel" style="grid-area: 2 / 12 / 10 / 16; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr); margin-right: 15px;">
+        <h2 class="title">Temperatura</h2>
+        <div class="background-blurtemp"></div>
+        <img id="buttontemp" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/8/1/8; z-index: 1;">
+        <img style="grid-area: 1/1/2/10; z-index: 1;" width="100%" height="170px" src="https://i.imgur.com/3O4SiCt.png">
+        <div style="grid-area: 1/2/3/4; z-index: 0; width: 100%; transform: translate(80px, 80px);" id="slider"></div>
+        <h3 class="title" style="grid-area: 4/1/5/5;">Accions ràpides</h3>
+        <div class="quickactions">
+            <div id="fred"></div>
+            <div id="calent"></div>
+            <div id="ventilar"></div>
+        </div>
+    </div>
+
+    <div id="mirrorpanel" style="grid-area: 2 / 6 / 6 / 11; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
+        <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Mirall Intel·ligent</h2>
+        <div class="background-blurmirror" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
+        <img id="buttonmirror" src="https://img.icons8.com/ios-filled/50/mirror.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
+        <div id="mirrorcontrols" style="grid-area: 2/1/8/8; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Activar pantalla</button>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Mostrar el temps</button>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Mostrar notícies</button>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Mostrar calendari</button>
+        </div>
+    </div>
+    
+    <div id="bathpanel" style="grid-area: 6 / 6 / 10 / 11; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
+        <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Banyera</h2>
+        <div class="background-blurbath" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
+        <img id="buttonbath" src="https://img.icons8.com/ios-filled/50/bathtub.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
+        <div id="bathcontrols" style="grid-area: 2/1/8/8; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Preescalfar banyera</button>
+            <div style="display: flex; justify-content: space-between; width: 80%;">
+                <span>Temperatura:</span>
+                <input type="range" min="20" max="40" value="30" style="width: 60%;">
+                <span id="bathTemp">30°C</span>
+            </div>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Omplir banyera</button>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Buidar banyera</button>
+        </div>
+    </div>
+    
+    <div id="showerpanel" style="grid-area: 2 / 1 / 6 / 6; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
+        <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Dutxa</h2>
+        <div class="background-blurshower" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
+        <img id="buttonshower" src="https://img.icons8.com/ios-filled/50/shower.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
+        <div id="showercontrols" style="grid-area: 2/1/8/8; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
+            <div style="display: flex; justify-content: space-between; width: 80%;">
+                <span>Temperatura:</span>
+                <input type="range" min="20" max="40" value="30" style="width: 60%;">
+                <span id="showerTemp">30°C</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; width: 80%;">
+                <span>Pressió:</span>
+                <input type="range" id="showerPressureSlider" min="1" max="5" value="3" style="width: 60%;">
+                <span id="showerPressure">Normal</span>
+            </div>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Iniciar dutxa</button>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Aturar dutxa</button>
+        </div>
+    </div>
+    
+    <div id="humiditypanel" style="grid-area: 6 / 1 / 10 / 3; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
+        <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Humitat</h2>
+        <div class="background-blurhumidity" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
+        <img id="buttonhumidity" src="https://img.icons8.com/ios-filled/50/humidity.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
+        <div id="humiditydisplay" style="grid-area: 2/1/4/8; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+            <div style="font-size: 48px; margin-bottom: 20px;">65%</div>
+            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Activar deshumidificador</button>
+        </div>
+        <div style="grid-area: 4/1/8/8; width: 100%; height: 100%;">
+            <canvas id="humidityChart"></canvas>
+        </div>
+    </div>
