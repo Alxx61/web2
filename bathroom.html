@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lavabo</title>
-    <link rel="stylesheet" href="style2.css" />
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
-    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
-    <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="index.js"></script>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height," />
+    
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+        <script src="index.js"></script>
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    
+        <script src="spotifyplayer.js"></script>
+    
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
+        <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
+        <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
+    
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="style2.css" />
+        <link rel="stylesheet" href="spotifyplayer.css" />
+        <link rel="stylesheet" href="switch.css" />
+        <link rel="stylesheet" href="blind.css" />
+    
+    
+        <title>Sala d'estar</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+        </style>
+    </head>
 <body>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index(3).html">Control</a>
+        <a href="#">Control</a>
         <a href="#">Consum</a>
         <a href="#">Automatitzacions</a>
-        <a href="cctv.html">Videovigilància</a>
+        <a href="mailto:alex.bosch@inspereborrell.cat">Contact</a>
     </div>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
         }
-
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
         }
@@ -47,14 +60,14 @@
 
     <div id="lightingpanel">
         <h2 class="title">Il·luminació</h2>
-        <div class="background-blurlight"></div>
-        <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2" style="width: 25px; height: 25px; border-radius: 50%; margin: 13px 0 0 38px; grid-area: 1/7/2/8; z-index: 1;">
+        <div id="background-blurlightbathroom" class="background-blurlight"></div>
+        <img class="buttonlight" id="buttonlightbathroom" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2" style="width: 25px; height: 25px; border-radius: 50%; margin: 13px 0 0 38px; grid-area: 1/7/2/8; z-index: 1;">
         <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
-        <input type="range" id="lightSlider" min="0" max="100">
-        <span id="sliderValue">Intensitat: 50%</span>
+        <input type="range" class="lightslider" id="lightSliderBathroom" min="0" max="100">
+        <span id="sliderValueBathroom" class="sliderValue">Intensitat: 50%</span>
         <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(113.5px);"></div>
 
-        <div id="picker"></div>
+        <div id="pickerBathroom" class="picker"></div>
     </div>
 
     <div id="temperaturepanel" style="grid-area: 2 / 12 / 10 / 16; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr); margin-right: 15px;">
@@ -71,7 +84,7 @@
         </div>
     </div>
 
-    <div id="mirrorpanel" style="grid-area: 2 / 6 / 6 / 11; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
+    <div id="mirrorpanel" style="grid-area: 6 / 3 / 12 / 6; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
         <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Mirall Intel·ligent</h2>
         <div class="background-blurmirror" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
         <img id="buttonmirror" src="https://img.icons8.com/ios-filled/50/mirror.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
@@ -83,7 +96,7 @@
         </div>
     </div>
     
-    <div id="bathpanel" style="grid-area: 6 / 6 / 10 / 11; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
+    <div id="bathpanel" style="grid-area: 7 / 6 / 12 / 12; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
         <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Banyera</h2>
         <div class="background-blurbath" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
         <img id="buttonbath" src="https://img.icons8.com/ios-filled/50/bathtub.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">

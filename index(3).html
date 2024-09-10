@@ -23,6 +23,8 @@
     <link rel="stylesheet" href="style2.css" />
     <link rel="stylesheet" href="spotifyplayer.css" />
     <link rel="stylesheet" href="switch.css" />
+    <link rel="stylesheet" href="blind.css" />
+
 
     <title>Sala d'estar</title>
     <style>
@@ -35,16 +37,15 @@
 
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index(3).html">Control</a>
+        <a href="#">Control</a>
         <a href="#">Consum</a>
         <a href="#">Automatitzacions</a>
-        <a href="cctv.html">Videovigilància</a>
+        <a href="mailto:alex.bosch@inspereborrell.cat">Contact</a>
     </div>
     <script>
         function openNav() {
             document.getElementById("mySidenav").style.width = "250px";
         }
-
         function closeNav() {
             document.getElementById("mySidenav").style.width = "0";
         }
@@ -73,24 +74,20 @@
     
 
 
-    
+
 <div id="lightingpanel">
     <h2 class="title" > Iluminació </h2>
-    <div class="background-blurlight"></div>
+    <div id="background-blurlightlivingroom" class="background-blurlight"></div>
 
-    <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
+    <img class="buttonlight" id="buttonlightlivingroom" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
     <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
 
-    <input type="range" id="lightSlider" min="0" max="100" >
-        <span id="sliderValue">Intensitat: 50%</span>
+    <input type="range" class="lightslider" id="lightSliderLivingroom" min="0" max="100" >
+        <span id="sliderValueLivingroom" class="sliderValue">Intensitat: 50%</span>
 
 
     <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(113.5px);"></div>
-    <div id="picker"></div>
-
-
-
-
+    <div id="pickerLivingroom" class="picker"></div>
 
 </div>
 

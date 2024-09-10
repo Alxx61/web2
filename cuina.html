@@ -1,31 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height," />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="index.js"></script>
-    <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    <script src="spotifyplayer.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
-    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
-    <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script>
-    <script src="blind.js"></script>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height," />
+    
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
+        <script src="index.js"></script>
+        <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    
+        <script src="spotifyplayer.js"></script>
+    
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
+        <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
+        <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="style2.css" />
-    <link rel="stylesheet" href="spotifyplayer.css" />
-    <link rel="stylesheet" href="switch.css" />
-    <link rel="stylesheet" href="blind.css" />
-
-    <title>Cuina</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
-    </style>
-</head>
+    
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="style2.css" />
+        <link rel="stylesheet" href="spotifyplayer.css" />
+        <link rel="stylesheet" href="switch.css" />
+        <link rel="stylesheet" href="blind.css" />
+    
+    
+        <title>Sala d'estar</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+        </style>
+    </head>
 <body>
     <h1 id="heregoestime">Error</h1>
     <ul id="bedrooms">
@@ -39,7 +44,7 @@
         <a href="#">Control</a>
         <a href="#">Consum</a>
         <a href="#">Automatitzacions</a>
-        <a href="#">Contact</a>
+        <a href="mailto:alex.bosch@inspereborrell.cat">Contact</a>
     </div>
     <script>
         function openNav() {
@@ -55,14 +60,18 @@
 
     <div id="lightingpanel" class="">
         <h2 class="title">Il·luminació</h2>
-        <div class="background-blurlight"></div>
-        <img id="buttonlight" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
+        <div id="background-blurlightcuina" class="background-blurlight"></div>
+        <img class="buttonlight" id="buttonlightcuina" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
         <img style="grid-area: 1/2/9/9;" height="200px" width="230px" src="https://i.imgur.com/Mcwc6NZ.png">
-        <input type="range" id="lightSlider" min="0" max="100">
-        <span id="sliderValue">Intensitat: 50%</span>
+        
+        <input type="range" class="lightslider" id="lightSliderKitchen" min="0" max="100">
+        <span id="sliderValueKitchen" class="sliderValue">Intensitat: 50%</span>
+
+
         <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(113.5px);"></div>
 
-        <div id="picker"></div>
+        <div id="pickerKitchen" class="picker"></div>
+
     </div>
 
     <div id="temperaturepanel" class="">
@@ -83,7 +92,7 @@
         <h2 class="title">Nevera</h2>
         <div class="status" id="fridgetemp">Temperatura: 4°C</div>
         <div class="controls" id="fridgecontrols">
-            <button class="action-button">
+            <button class="action-button" onclick="setFridgeTemp()">
                 <i class="fas fa-thermometer-half"></i>
                 <span>Estableix temperatura</span>
             </button>
@@ -102,7 +111,7 @@
         <h2 class="title">Forn</h2>
         <div class="status" id="oventemp">Temperatura: 180°C</div>
         <div class="controls" id="ovencontrols">
-            <button class="action-button">
+            <button class="action-button" onclick="setOvenTemp()">
                 <i class="fas fa-thermometer-half"></i>
                 <span>Estableix temperatura</span>
             </button>
@@ -178,5 +187,36 @@
             </div>
         </div>
     </div>
+
+
 </body>
+
+
+
+
+<script>
+    function setFridgeTemp() {
+        const temp = prompt("Introdueix la temperatura de la nevera (en °C):");
+        if (temp !== null && !isNaN(temp)) {
+            const parsedTemp = parseFloat(temp);
+            if (parsedTemp >= -10 && parsedTemp <= 10) {
+                document.getElementById("fridgetemp").textContent = `Temperatura: ${parsedTemp}°C`;
+            } else {
+                alert("La temperatura ha d'estar entre -10°C i 10°C.");
+            }
+        }
+    }
+
+    function setOvenTemp() {
+        const temp = prompt("Introdueix la temperatura del forn (en °C):");
+        if (temp !== null && !isNaN(temp)) {
+            const parsedTemp = parseFloat(temp);
+            if (parsedTemp >= 0 && parsedTemp <= 500) {
+                document.getElementById("oventemp").textContent = `Temperatura: ${parsedTemp}°C`;
+            } else {
+                alert("La temperatura ha d'estar entre 0°C i 500°C.");
+            }
+        }
+    }
+</script>
 </html>

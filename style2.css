@@ -312,7 +312,9 @@ body {
 
 }
 
-#buttonlight {
+
+
+.buttonlight {
     position: relative;
     z-index: 1;
     width: 25px; 
@@ -323,6 +325,7 @@ body {
     margin-top: 13px;
     margin-left: 38px;
 }
+
 
 
 
@@ -379,7 +382,7 @@ body {
 
 }
 
-#lightSlider {
+.lightSlider {
     width: 50%;
     margin-top: auto;
     margin-right: auto;
@@ -387,7 +390,6 @@ body {
     margin: 10px;
     
 }
-
 .lightslider{
     width: 50%;
     margin-top: auto;
@@ -407,7 +409,7 @@ body {
     grid-area: 6/1/7/3;
     
 }
-#sliderValue {
+.sliderValue {
     display: block;
     margin-top: 5px;
     font-size: 1.2em;
@@ -541,16 +543,16 @@ body {
 
 
 
-#picker {
+.picker {
     grid-area: 2/6/6/8;
     transform: translate(100px);
     z-index: 0;
     transition: transform 0.5s;
   }
   
-  #picker:hover {
+.picker:hover {
     transform: translate(calc(100px - 120px));
-  }
+}
 
 
 
@@ -836,12 +838,14 @@ body {
     gap: 10px;
     align-items: start;
     overflow-y: auto;
-    max-height: 200px;
+    max-height: 250px;
+    overflow-x: hidden;
+    padding: 5px;
 }
 
 #ovencontrols .action-button {
     width: 100%;
-    height: 70px;
+    height: 100px;
     padding: 10px;
     font-size: 12px;
 }
@@ -856,9 +860,9 @@ body {
     position: relative;
     display: grid;
     grid-template-rows: auto auto 1fr;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(5, 1fr);
     gap: 10px;
-    z-index: 1;
+    z-index: 0;
 }
 
 #dishwasherstatus {
@@ -867,16 +871,27 @@ body {
     text-align: center;
     font-size: 18px;
     z-index: 1;
+    grid-area: 2 / 1 / 3 / 6;
+
 }
 
 #dishwashercontrols {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    z-index: 1;
-    font-family: Karla;
+    grid-area: 3 / 1 / 6 / 6;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    align-items: start;
+    overflow-y: auto;
+    max-height: 250px;
+    overflow-x: hidden;
+    padding: 5px;
+}
+
+#dishwashercontrols .action-button {
+    width: 100%;
+    height: 140px;
+    padding: 10px;
+    font-size: 12px;
 }
 
 /* Smart Refrigerator */
@@ -887,9 +902,6 @@ body {
     border-radius: 10px;
     margin: 10px;
     position: relative;
-    display: grid;
-    grid-template-rows: auto auto 1fr;
-    grid-template-columns: 1fr;
     gap: 10px;
 }
 
@@ -898,6 +910,8 @@ body {
     color: white;
     text-align: center;
     font-size: 18px;
+    z-index: 1;
+    transform: translate(0px, 40px);
 }
 
 #fridgecontrols {
