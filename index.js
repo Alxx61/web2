@@ -73,66 +73,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-document.addEventListener("DOMContentLoaded", function() {
-    const lightSlider = document.getElementById("lightSlider");
-    lightSlider.addEventListener("input", function() {
-        myFunction(this.value);
-    });
 
-    function myFunction(value) {
-        document.getElementById("sliderValue").innerHTML = "Intensitat: " + value + "%";
-        updateIntensity(value);
-        console.log(value);
-    }
-
-    function updateIntensity(value) {
-        const url = 'http://localhost:30010/remote/preset/Lightbool/property/Intensity';
-        const data = {
-            PropertyValue: Number(value * 3),
-            GenerateTransaction: true
-        };
-
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    }
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-    const lightSliderKitchen = document.getElementById("lightSliderKitchen");
-    lightSliderKitchen.addEventListener("input", function() {
-        myFunctionKitchen(this.value);
-    });
-
-    function myFunctionKitchen(value) {
-        document.getElementById("sliderValueKitchen").innerHTML = "Intensitat: " + value + "%";
-        updateIntensityKitchen(value);
-        console.log(value);
-    }
-
-    function updateIntensityKitchen(value) {
-        console.log(value);
-        const url = 'http://localhost:30010/remote/preset/Lights/function/Intensity';
-        const data = {
-            Parameters: {
-                Intensity: value
-            },
-            GenerateTransaction: true
-        };
-
-        fetch(url, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(data)
-        });
-    }
-});
 
 function updateDateTime() {
     const now = new Date();
@@ -211,6 +152,53 @@ function generateWeatherText(description) {
 }
 
 window.onload = getWeather;
+
+document.addEventListener('DOMContentLoaded', function() {
+    const blindSlider = document.getElementById('blindSlider');
+    const sliderValueBlind = document.getElementById('sliderValueBlind');
+    const blindCover = document.getElementById('blindCover');
+
+    // Update the cover height and slider value
+    blindSlider.addEventListener('input', function() {
+        const value = 100 - this.value; // Reverse the value for correct direction
+        sliderValueBlind.innerHTML = `Obertura: ${ 100 - value}%`;
+        
+        // Adjust height of the blind cover
+        blindCover.style.height = `${100 - value}%`;
+
+        // Optionally send the update to the server
+        updateBlindOpenness(this.value);
+    });
+
+    // Function to update server-side blind openness
+    function updateBlindOpenness(value) {
+        fetch('http://localhost:30010/remote/preset/LightsBedroom/function/Curtain', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "Parameters": {
+                    "Open": Number(value) / 100 
+                },
+                "GenerateTransaction": true 
+            })
+            
+        })
+        .then(response => {
+            if (!response.ok) {
+                console.error('Error updating blind openness:', response.status, response.statusText);
+            }
+        })
+        .catch(error => {
+            console.error('Error communicating with server:', error);
+        });
+    }
+});
+
+
+
+
 
 ///buttons onwards of here
 //wifi button
@@ -304,12 +292,14 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: [],
             datasets: [{
-                label: 'Humidity',
+                label: 'Humitat',
                 data: [],
-                backgroundColor: 'rgba(0, 0, 0, 1)',
-                borderColor: 'rgba(0, 255, 0, 0.68)',
-                color: "white",
-                borderWidth: 4
+                backgroundColor: 'rgba(7, 166, 250, 1)', // Light background for the area under the line
+                borderColor: 'rgba(7, 166, 250, 1)', // Changed to yellow for better visibility
+                borderWidth: 4,
+                pointBackgroundColor: 'rgba(7, 166, 250, 1)', // Point color
+                pointBorderColor: 'rgba(7, 166, 250, 1)', // Point border color
+                pointRadius: 3 // Increased point size
             }]
         },
         options: {
@@ -377,6 +367,29 @@ document.addEventListener('DOMContentLoaded', function() {
     // Initial data point
     addData();
 });
+
+// Assuming this is within your existing DOMContentLoaded event listener
+document.addEventListener('DOMContentLoaded', function () {
+
+    // Button for activating/deactivating the dehumidifier
+    const dehumidifierButton = document.getElementById('dehumidifierButton'); // Adjust selector if necessary
+
+    if (dehumidifierButton) {
+        dehumidifierButton.addEventListener('click', function() {
+            if (dehumidifierButton.textContent === 'Activar deshumidificador') {
+                dehumidifierButton.textContent = 'Desactivar deshumidificador';
+                dehumidifierButton.style.backgroundColor = '#444'; // Change to red
+            } else {
+                dehumidifierButton.textContent = 'Activar deshumidificador';
+                dehumidifierButton.style.backgroundColor = 'red'; // Change back to original color
+            }
+        });
+    }
+});
+
+
+
+
 
 // Add functionality to sliders and improve styling
 document.addEventListener('DOMContentLoaded', function() {
@@ -462,7 +475,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Kitchen light Button state:', backgroundBlur.style.display !== 'none');
 
             // Then attempt to communicate with the server
-            fetch('http://localhost:30010/remote/preset/Lights/function/Toggle', {
+            fetch('http://localhost:30010/remote/preset/LightKitchen/function/Toggle', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -497,7 +510,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Living room light Button state:', backgroundBlur.style.display !== 'none');
 
             // Then attempt to communicate with the server
-            fetch('http://localhost:30010/tempreplacement/preset/Lights/function/Toggle', {
+            fetch('http://localhost:30010/remote/preset/LightLivingroom/function/Toggle', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -532,7 +545,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Bedroom light Button state:', backgroundBlur.style.display !== 'none');
 
             // Then attempt to communicate with the server
-            fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
+            fetch('http://localhost:30010/remote/preset/LightsBedroom/function/Toggle', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -567,7 +580,7 @@ document.addEventListener("DOMContentLoaded", function() {
             console.log('Bathroom light Button state:', backgroundBlur.style.display !== 'none');
 
             // Then attempt to communicate with the server
-            fetch('http://localhost:30010/remote/preset/Lightbool/function/Toggle', {
+            fetch('http://localhost:30010/remote/preset/LightBathroom/function/Toggle', {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -587,6 +600,49 @@ document.addEventListener("DOMContentLoaded", function() {
         console.warn('Bathroom light button or background blur element not found');
     }
 });
+
+
+//bathrooom bath fill/empty
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const imgButton = document.getElementById('bathbutton');
+    const imgButton1 = document.getElementById('bathbutton1'); 
+
+    if (imgButton) {
+        imgButton.addEventListener('click', toggleButton);
+    } else {
+        console.warn('Bathroom light button not found');
+    }
+
+    if (imgButton1) {
+        imgButton1.addEventListener('click', toggleButton); 
+    } else {
+        console.warn('Bathroom light button 1 not found');
+    }
+
+    function toggleButton() {
+        console.log('Bathroom bath Button clicked');
+
+        // Attempt to communicate with the server
+        fetch('http://localhost:30010/remote/preset/LightBathroom/function/Water', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Parameters: {},
+                GenerateTransaction: true
+            })
+        })
+        .then(response => response.ok ? response.json() : Promise.reject(`HTTP error! status: ${response.status}`))
+        .then(() => {
+            console.log('Server updated successfully');
+        })
+        .catch(error => {
+            console.error('Error communicating with server:', error);
+        });
+    }
+});
+
 
 // Living Room Light Slider
 document.addEventListener("DOMContentLoaded", function() {
@@ -642,7 +698,7 @@ function updateLightIntensity(room, value) {
 
     switch(room) {
         case "LivingRoom":
-            url = 'http://localhost:30010/tempreplacement/preset/Lights/function/Intensity';
+            url = 'http://localhost:30010/remote/preset/LightLivingoom/function/Intensity';
             data = {
                 Parameters: {
                     Intensity: Number(value)
@@ -651,14 +707,16 @@ function updateLightIntensity(room, value) {
             };
             break;
         case "Bedroom":
-            url = 'http://localhost:30010/remote/preset/Lightbool/property/Intensity';
+            url = 'http://localhost:30010/remote/preset/LightsBedroom/function/Intensity';
             data = {
-                PropertyValue: Number(value),
+                Parameters: {
+                    Intensity: Number(value)
+                },
                 GenerateTransaction: true
             };
             break;
         case "Kitchen":
-            url = 'http://localhost:30010/remote/preset/Lights/function/Intensity';
+            url = 'http://localhost:30010/remote/preset/LightKitchen/function/Intensity';
             data = {
                 Parameters: {
                     Intensity: Number(value)
@@ -667,9 +725,11 @@ function updateLightIntensity(room, value) {
             };
             break;
         case "Bathroom":
-            url = 'http://localhost:30010/remote/preset/Lightbool/property/Intensity';
+            url = 'http://localhost:30010/remote/preset/LightBathroom/function/Intensity';
             data = {
-                PropertyValue: Number(value),
+                Parameters: {
+                    Intensity: Number(value)
+                },
                 GenerateTransaction: true
             };
             break;
@@ -698,7 +758,7 @@ colorPickerKitchen.on('color:change', function(color) {
     console.log(hex); // Log the hex value
 
     // Ensure the fetch requests are successful
-    fetch('http://localhost:30010/remote/preset/Lights/function/RGBKitchen', {
+    fetch('http://localhost:30010/remote/preset/LightKitchen/function/RGBKitchen', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
@@ -727,17 +787,24 @@ const colorPickerLivingroom = new iro.ColorPicker("#pickerLivingroom", {
     color: "#f00" // Default color
 });
 
+const colorPickerBedroom = new iro.ColorPicker("#pickerBedroom", {
+    width: 200,
+    color: "#f00" // Default color
+});
+
 colorPickerBathroom.on('color:change', function(color) {
     var hex = color.rgbString.replace(/\s+/g, ''); // Get the hex value directly without spaces
     console.log(`Bathroom Light - Hex: ${hex}`); // Log the hex value
 
-    fetch('http://localhost:30010/remote/preset/BathroomLight/property/Color', {
+    fetch('http://localhost:30010/remote/preset/LightBathroom/function/RGBBathroom', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            PropertyValue: hex,
+            Parameters: {
+                RGBBathroom: hex
+            },
             GenerateTransaction: true
         })
     }).then(response => {
@@ -752,13 +819,15 @@ colorPickerLivingroom.on('color:change', function(color) {
     var hex = color.rgbString.replace(/\s+/g, ''); // Get the hex value directly without spaces
     console.log(`Living Room Light - Hex: ${hex}`); // Log the hex value
 
-    fetch('http://localhost:30010/remote/preset/LivingRoomLight/property/Color', {
+    fetch('http://localhost:30010/remote/preset/LightLivingroom/function/RGBLivingroom', {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            PropertyValue: hex,
+            Parameters: {
+                RGBLiving: hex
+            },
             GenerateTransaction: true
         })
     }).then(response => {
@@ -766,4 +835,73 @@ colorPickerLivingroom.on('color:change', function(color) {
             console.error('Error updating Living Room color:', response.status, response.statusText);
         }
     });
+});
+
+//bedroom color picker
+colorPickerBedroom.on('color:change', function(color) {
+    var hex = color.rgbString.replace(/\s+/g, ''); // Get the hex value directly without spaces
+    console.log(hex); // Log the hex value
+
+        // Change the border color of the player element
+        const playerElement = document.querySelector('.player'); // Adjust the selector if necessary
+        if (playerElement) {
+        playerElement.style.borderColor = hex; // Set the border color to the selected color
+    }
+
+    // Ensure the fetch requests are successful
+    fetch('http://localhost:30010/remote/preset/LightsBedroom/function/RGBBedroom', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            Parameters: {
+                RGBBedroom: hex
+            },
+            GenerateTransaction: true
+        })
+    }).then(response => {
+        if (!response.ok) {
+            console.error('Error updating color:', response.status, response.statusText);
+        }
+    });
+});
+
+//shower on/off
+document.addEventListener("DOMContentLoaded", function() {
+    const bathButton = document.getElementById('botodutxa'); // Get the bath button element
+    const bathButton1 = document.getElementById('botodutxa1'); // Get the second bath button element
+    
+    if (bathButton) {
+        bathButton.addEventListener('click', toggleButton); // Add event listener for bath button
+    } else {
+        console.warn('Bath button not found');
+    }
+
+    if (bathButton1) {
+        bathButton1.addEventListener('click', toggleButton); // Add event listener for the second bath button
+    } else {
+        console.warn('Bath button 1 not found');
+    }
+
+    function toggleButton() {
+        console.log('Bathroom bath Button clicked');
+
+        // Attempt to communicate with the server
+        fetch('http://localhost:30010/remote/preset/LightBathroom/function/Wateronoff', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Parameters: {},
+                GenerateTransaction: true
+            })
+        })
+        .then(response => response.ok ? response.json() : Promise.reject(`HTTP error! status: ${response.status}`))
+        .then(() => {
+            console.log('Server updated successfully');
+        })
+        .catch(error => {
+            console.error('Error communicating with server:', error);
+        });
+    }
 });

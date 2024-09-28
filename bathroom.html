@@ -6,21 +6,18 @@
     
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    
-        <script src="index.js"></script>
-        <script src="https://sdk.scdn.co/spotify-player.js"></script>
-    
-        <script src="spotifyplayer.js"></script>
-    
+        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
         <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
         <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
+    
+    
+        <script src="index.js"></script>
     
     
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="style2.css" />
-        <link rel="stylesheet" href="spotifyplayer.css" />
         <link rel="stylesheet" href="switch.css" />
         <link rel="stylesheet" href="blind.css" />
     
@@ -89,10 +86,10 @@
         <div class="background-blurmirror" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
         <img id="buttonmirror" src="https://img.icons8.com/ios-filled/50/mirror.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
         <div id="mirrorcontrols" style="grid-area: 2/1/8/8; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Activar pantalla</button>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Mostrar el temps</button>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Mostrar notícies</button>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Mostrar calendari</button>
+            <button class="action-button" style="width: 80%;"><i class="fas fa-tv"></i> Activar pantalla</button>
+            <button class="action-button" style="width: 80%;"><i class="fas fa-calendar"></i> Mostrar calendari</button>
+            <button class="action-button" style="width: 80%;"><i class="fas fa-cloud-sun"></i> Mostrar el temps</button>
+            <button class="action-button" style="width: 80%;"><i class="fas fa-newspaper"></i> Mostrar notícies</button>
         </div>
     </div>
     
@@ -101,14 +98,14 @@
         <div class="background-blurbath" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
         <img id="buttonbath" src="https://img.icons8.com/ios-filled/50/bathtub.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
         <div id="bathcontrols" style="grid-area: 2/1/8/8; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Preescalfar banyera</button>
+            <button class="action-button" style="width: 80%;">Preescalfar banyera</button>
             <div style="display: flex; justify-content: space-between; width: 80%;">
-                <span>Temperatura:</span>
+                <span class="tags">Temperatura:</span>
                 <input type="range" min="20" max="40" value="30" style="width: 60%;">
-                <span id="bathTemp">30°C</span>
+                <span class="tags" id="bathTemp">30°C</span>
             </div>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Omplir banyera</button>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Buidar banyera</button>
+            <button id="bathbutton" class="action-button" style="width: 80%;">Omplir banyera</button>
+            <button id="bathbutton1" class="action-button" style="width: 80%;">Buidar banyera</button>
         </div>
     </div>
     
@@ -118,29 +115,27 @@
         <img id="buttonshower" src="https://img.icons8.com/ios-filled/50/shower.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
         <div id="showercontrols" style="grid-area: 2/1/8/8; display: flex; flex-direction: column; justify-content: space-around; align-items: center;">
             <div style="display: flex; justify-content: space-between; width: 80%;">
-                <span>Temperatura:</span>
+                <span class="tags" >Temperatura:</span>
                 <input type="range" min="20" max="40" value="30" style="width: 60%;">
-                <span id="showerTemp">30°C</span>
+                <span class="tags" id="showerTemp">30°C</span>
             </div>
             <div style="display: flex; justify-content: space-between; width: 80%;">
-                <span>Pressió:</span>
+                <span class="tags">Pressió:</span>
                 <input type="range" id="showerPressureSlider" min="1" max="5" value="3" style="width: 60%;">
-                <span id="showerPressure">Normal</span>
+                <span class="tags" id="showerPressure">Normal</span>
             </div>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Iniciar dutxa</button>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Aturar dutxa</button>
+            <button id="botodutxa" class="action-button" style="width: 80%;">Iniciar dutxa</button>
+            <button id="botodutxa1" class="action-button" style="width: 80%;">Aturar dutxa</button>
         </div>
     </div>
     
     <div id="humiditypanel" style="grid-area: 6 / 1 / 10 / 3; background-color: #777777; border-radius: 20px; margin: 10px; position: relative; display: grid; grid-template-rows: repeat(7, 1fr); grid-template-columns: repeat(7, 1fr);">
-        <h2 class="title" style="font-size: 20px; grid-area: 1/1/1/5; margin: 20px 0 0 20px; z-index: 2;">Humitat</h2>
-        <div class="background-blurhumidity" style="width: 30px; height: 30px; background: #ff3333; border-radius: 50%; filter: blur(3px); z-index: 0; margin: 8px; display: block; grid-area: 1/7/1/8;"></div>
-        <img id="buttonhumidity" src="https://img.icons8.com/ios-filled/50/humidity.png" style="width: 25px; height: 25px; border-radius: 50%; margin: 10px; grid-area: 1/7/1/8; z-index: 1;">
-        <div id="humiditydisplay" style="grid-area: 2/1/4/8; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+        <h2 class="title" style="font-size: 20px; grid-area: 1/2/1/5; transform: translate(20px); margin: 20px 0 0 20px; z-index: 2;">Humitat</h2>
+        <div id="humiditydisplay" style="grid-area: 2/1/4/8; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; font-family: Karla; color: white;">
             <div style="font-size: 48px; margin-bottom: 20px;">65%</div>
-            <button style="background-color: #444; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; width: 80%;">Activar deshumidificador</button>
+            <button id="dehumidifierButton" class="action-button" style="width: 80%;">Activar deshumidificador</button>
         </div>
         <div style="grid-area: 4/1/8/8; width: 100%; height: 100%;">
-            <canvas id="humidityChart"></canvas>
+            <canvas id="humidityChart"></canvas> <!-- Ensure this canvas is present -->
         </div>
     </div>

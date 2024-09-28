@@ -135,7 +135,7 @@ body {
     background-color: #777777;
 }
 
-#status {
+.status {
     grid-area: 5 / 10 / 6 / 13;
     font-family: Karla;
     color: white;
@@ -199,13 +199,14 @@ body {
 }
 
 #vacuumstatus {
-    grid-area: 3 / 1 / 4 / 8;
+    grid-area: 3 / 1 / 4 / 9;
     display: flex;
     justify-content: space-around;
     align-items: center;
     font-family: "Karla", sans-serif;
     color: white;
     margin-top: 10px;
+    z-index: 2;
 }
 
 #batteryleft, #timeleft {
@@ -214,23 +215,27 @@ body {
     background-color: rgba(0, 0, 0, 0.2);
     padding: 10px;
     border-radius: 15px;
+    z-index: 2;
 }
 
 #batteryleft i, #timeleft i {
     font-size: 24px;
     margin-right: 10px;
+    z-index: 2;
 }
 
 #batteryleft span, #timeleft span {
     font-size: 18px;
+    z-index: 2;
 }
 
 #vacumcontrol .quickactions {
-    grid-area: 5 / 1 / 8 / 8;
+    grid-area: 5 / 1 / 8 / 9;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 10px;
+    z-index: 2;
 }
 
 #vacumcontrol .action-button {
@@ -247,6 +252,8 @@ body {
     height: 100px;
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 2;
+    margin-bottom: 30px;
 }
 
 #vacumcontrol .action-button:hover {
@@ -441,7 +448,7 @@ body {
 #batteryleft{
 
     background-color: black;
-    grid-area: 4/2/7/5;
+    grid-area: 4/3/7/5;
     border-radius: 30px;
     margin: 5px;
 
@@ -495,7 +502,7 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    grid-area: 5/1/7/9;
+    grid-area: 5/1/7/10;
     padding: 10px;
 }
 
@@ -513,6 +520,7 @@ body {
     height: 80px;
     cursor: pointer;
     transition: all 0.3s ease;
+
 }
 
 .action-button:hover {
@@ -560,7 +568,7 @@ body {
     height: 100%;
     width: 0;
     position: fixed;
-    z-index: 1;
+    z-index: 10;
     top: 0;
     left: 0;
     background-color: #353535; 
@@ -604,25 +612,56 @@ body {
 
 
 
-#blind {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #777777; /* Same as #blindpanel's background color */
+.blind-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 20px auto;
+    width: 80%; /* Keep wrapper width same as the image */
 }
 
-#blindpanel{
+.blind-image {
+    width: 100%; /* Image will take 100% of the wrapper's width */
+    height: auto;
+    object-fit: cover;
     position: relative;
-    grid-area: 3/12/9/16;
+    z-index: 0;
+}
+
+.blind-cover {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%; /* Fully covers the image */
+    width: 100%; /* Full width of the image */
+    background: linear-gradient(to top, #777777 0%, #777777 100%); /* Match background color */
+    transition: height 0.3s ease;
+    z-index: 1;
+}
+
+#blindSlider {
+    position: absolute;
+    left: -90px; 
+    top: 10px;
+    height: 90%;
+    transform: rotate(270deg);
+    z-index: 2; 
+}
+
+#blindpanel {
+    position: relative;
     background-color: #777777;
     border-radius: 20px;
-    margin: 10px;
+    margin: 10px auto;
     overflow: hidden;
     text-align: center;
-    width: 100%;
-    height: 600px; /* Set a fixed height for demo purposes */
+    grid-area: 3/12/9/16;
 }
+
+.sliderValue {
+    display: block;
+    margin-top: 10px; 
+}
+
 
 
 
@@ -660,50 +699,41 @@ body {
 
   .flex-devices {
     display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: stretch;
-    align-content: stretch;
-    grid-area: 2/2/8/5;
+    flex-direction: row; /* Ensure horizontal layout */
+    justify-content: center; /* Center items horizontally */
+    align-items: flex-start; /* Align items at the start */
+    grid-area: 7/6/10/12;
     background-color: #777777;
     border-radius: 20px;
-    margin: 10px;
-    z-index: 0;
-    padding: 10px;
-
-    
-  }
-
-  .flex-devices2 {
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: stretch;
-    align-content: stretch;
-    grid-area: 2/1/7/6;
-    background-color: #777777;
-    border-radius: 20px;
-    margin: 10px;
+    margin: 10px; /* Add some margin for spacing */
     z-index: 0;
     padding: 10px;
 }
-  .flex-itemsdevices {
-    display: block;
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: auto;
-    align-self: auto;
-    order: 0;
+
+.flex-itemsdevices {
+    display: flex; /* Keep as flex for better alignment */
+    flex-direction: column; /* Stack icon, switch, and slider vertically */
+    align-items: center; /* Center items horizontally */
+    margin: 0 10px; /* Add margin between devices */
     z-index: 1;
-  }
+}
+
+.device-container {
+    display: flex;
+    flex-direction: column; /* Stack icon, switch, and slider vertically */
+    align-items: center; /* Center items horizontally */
+}
+
+.device-slider {
+    margin-top: 5px; /* Add some space above the slider */
+}
 
   .player{
-    grid-area: 7/6/11/9;
+    grid-area: 2/2/7/5;
     background-color: #777777;
     border-radius: 20px;
     margin: 10px;
+    width: auto;
 
 
   }
@@ -1036,4 +1066,24 @@ body {
     border: 1px solid #999999;
 }
 
+
+#humidityChart {
+    width: 100% !important; /* Ensure full width */
+    height: 300px; /* Increased height for better visibility */
+    background-color: rgba(255, 255, 255, 0.1); /* Light background for contrast */
+    border: 2px solid rgba(0, 255, 0, 0.5); /* Border to make it stand out */
+    border-radius: 10px; /* Rounded corners */
+font-family: Karla;
+
+}
+#humiditypanel .action-button i {
+background-color: red;
+}
+
+.tags{
+    color: white;
+    font-family: Karla;
+    font-size: 15px;
+    font-weight: 500;
+}
 
