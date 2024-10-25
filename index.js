@@ -300,17 +300,20 @@ document.addEventListener('DOMContentLoaded', function() {
     var element3 = document.getElementById('el3');
     var element4 = document.getElementById('el4');
   
-    if (currentPath === '/C:/Users/bosch/Desktop/web2/index(3).html') {
-        element1.style.fontWeight = '1000'; 
-      } else if (currentPath === '/C:/Users/bosch/Desktop/web2/habitacio.html') {
-        element2.style.fontWeight = '1000'; 
-      }else if (currentPath === '/C:/Users/bosch/Desktop/web2/cuina.html') {
-        element3.style.fontWeight = '1000'; 
-      }else if (currentPath === '/C:/Users/bosch/Desktop/web2/oficina.html') {
-            element4.style.fontWeight = '1000'; 
-        }
+    // Get just the filename from the path
+    var currentPage = currentPath.split('/').pop();
     
-    });
+    // Check against filenames only
+    if (currentPage === 'index.html' || currentPage === '') {
+        element1.style.fontWeight = '1000'; 
+    } else if (currentPage === 'habitacio.html') {
+        element2.style.fontWeight = '1000'; 
+    } else if (currentPage === 'cuina.html') {
+        element3.style.fontWeight = '1000'; 
+    } else if (currentPage === 'oficina.html') {
+        element4.style.fontWeight = '1000'; 
+    }
+});
 
 
 
