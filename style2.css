@@ -1070,12 +1070,12 @@ body {
 #humidityChart {
     width: 100% !important; /* Ensure full width */
     height: 300px; /* Increased height for better visibility */
-    background-color: rgba(255, 255, 255, 0.1); /* Light background for contrast */
-    border: 2px solid rgba(0, 255, 0, 0.5); /* Border to make it stand out */
     border-radius: 10px; /* Rounded corners */
-font-family: Karla;
-
+    font-family: Karla;
+    color: #000000; /* Set text color to black */
 }
+
+
 #humiditypanel .action-button i {
 background-color: red;
 }
@@ -1087,3 +1087,234 @@ background-color: red;
     font-weight: 500;
 }
 
+.onoffswitch {
+    position: relative;
+    width: 60px; /* Increased size for better visibility */
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.onoffswitch-checkbox {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #8DAEE0;
+    border-radius: 34px;
+    background-color: #cccccc;
+    transition: background-color 0.3s ease;
+}
+
+.onoffswitch-inner {
+    display: block;
+    width: 200%;
+    margin-left: -100%;
+    transition: margin 0.3s ease-in 0s;
+}
+
+.onoffswitch-inner:before, .onoffswitch-inner:after {
+    display: block;
+    float: left;
+    width: 50%;
+    height: 26px;
+    padding: 0;
+    line-height: 26px;
+    font-size: 14px;
+    color: white;
+    font-family: 'Karla', sans-serif;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.onoffswitch-inner:before {
+    content: "ON";
+    background-color: #4caf50; /* Green for ON */
+    color: #ffffff;
+}
+
+.onoffswitch-inner:after {
+    content: "OFF";
+    background-color: #f44336; /* Red for OFF */
+    color: #ffffff;
+    text-align: right;
+}
+
+.onoffswitch-switch {
+    display: block;
+    width: 22px;
+    margin: 2px;
+    background: #ffffff;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 34px;
+    border: 2px solid #8DAEE0;
+    border-radius: 50%;
+    transition: all 0.3s ease-in;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-inner {
+    margin-left: 0;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 0px;
+    background-color: #4caf50;
+}
+
+/* Flex Devices Panel */
+
+.flex-devices {
+    display: flex;
+    flex-direction: row; /* Change to row for horizontal layout */
+    flex-wrap: wrap; /* Allow wrapping if necessary */
+    justify-content: space-around; /* Distribute devices evenly */
+    align-items: center; /* Center items vertically */
+    background-color: #444444;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 0;
+}
+
+.flex-itemsdevices {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    justify-content: space-between;
+}
+
+.flex-itemsdevices img {
+    margin-right: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+.flex-itemsdevices .onoffswitch {
+    margin-left: auto;
+}
+
+.device-container {
+    display: flex;
+    align-items: center;
+    background-color: #555555;
+    padding: 10px;
+    border-radius: 10px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.device-container:hover {
+    background-color: #666666;
+}
+
+.device-container .onoffswitch-label {
+    border-color: #8DAEE0;
+}
+
+.device-container .onoffswitch-switch {
+    border-color: #8DAEE0;
+}
+
+/* Additional Styling if needed */
+
+.tags {
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.action-button {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.onoffswitch-label:hover {
+    background-color: #dddddd;
+}
+
+#heregoestime {
+    animation: fadeIn 2s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+
+#sleeppanel {
+    grid-area: 7 / 1 / 13 / 5; /* Adjust grid area as needed */
+    background-color: #777777;
+    padding: 20px;
+    border-radius: 20px;
+    margin: 10px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sleep-widget {
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+.sleep-widget canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.sleep-icons {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0 20px;
+    pointer-events: none;
+}
+
+.sleep-icons img {
+    width: 50px;
+    height: 50px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.sleep-icons img.active {
+    opacity: 1;
+}
+
+.sleep-times-display {
+    margin-top: 20px; /* Position below the widget */
+    font-family: Karla, sans-serif;
+    color: white;
+    font-size: 18px;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    transform: translate(0px, -30px);
+}
+
+/* Optional: Adjustments for interactive elements */
+#sleepSlider {
+    cursor: pointer;
+}
+
+/* Instructions Styling */
+#sleeppanel .instructions {
+    font-family: Karla, sans-serif;
+    color: white;
+    margin-bottom: 5px;
+    transform: translate(0px, -15px);
+}

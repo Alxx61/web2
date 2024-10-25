@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height," />
+    
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
+        <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
+        <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
+    
+    
+        <script src="index.js"></script>
+    
+    
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+        <link rel="stylesheet" href="style2.css" />
+        <link rel="stylesheet" href="switch.css" />
+        <link rel="stylesheet" href="blind.css" />
+        <link rel="stylesheet" href="automatitzacions.css" />
+    
+        <title>Sala d'estar</title>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+            @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+        </style>
+    </head>
+    <body>
+
+
+        <div id="mySidenav" class="sidenav">
+            <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+            <a href="index(3).html">Control</a>
+            <a href="consum.html">Consum</a>
+            <a href="automatitzacions.html">Automatitzacions</a>
+            <a href="mailto:alex.bosch@inspereborrell.cat">Contact</a>
+        </div>
+        <script>
+            function openNav() {
+                document.getElementById("mySidenav").style.width = "250px";
+            }
+            function closeNav() {
+                document.getElementById("mySidenav").style.width = "0";
+            }
+        </script>
+        <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
+        <!-- Automation Rules Panel -->
+        <div id="automationPanel" class="panel">
+            <h2 class="title">Automatitzacions</h2>
+            
+            <!-- Add New Rule Button -->
+            <button id="addRuleBtn" class="action-button">
+                <i class="fas fa-plus"></i>
+                <span>Nova Automatització</span>
+            </button>
+    
+            <!-- Rules List -->
+            <div id="rulesList">
+                <!-- Rules will be added here dynamically -->
+            </div>
+        </div>
+    
+        <!-- New Rule Modal -->
+        <div id="newRuleModal" class="modal">
+            <div class="modal-content">
+                <h3>Nova Automatització</h3>
+                
+                <!-- Trigger (IF) Section -->
+                <div class="rule-section">
+                    <h4>SI...</h4>
+                    <select id="triggerType" class="rule-select">
+                        <option value="time">Hora del dia</option>
+                        <option value="temperature">Temperatura</option>
+                        <option value="motion">Detecció de moviment</option>
+                        <option value="light">Nivell de llum</option>
+                    </select>
+                    
+                    <div id="triggerOptions" class="rule-options">
+                        <!-- Options will change based on trigger type -->
+                    </div>
+                </div>
+    
+                <!-- Action (THEN) Section -->
+                <div class="rule-section">
+                    <h4>LLAVORS...</h4>
+                    <select id="actionType" class="rule-select">
+                        <option value="lights">Llums</option>
+                        <option value="blinds">Persianes</option>
+                        <option value="thermostat">Termòstat</option>
+                        <option value="appliance">Electrodomèstic</option>
+                    </select>
+                    
+                    <div id="actionOptions" class="rule-options">
+                        <!-- Options will change based on action type -->
+                    </div>
+                </div>
+    
+                <!-- Save/Cancel Buttons -->
+                <div class="modal-buttons">
+                    <button id="saveRule" class="action-button">Desar</button>
+                    <button id="cancelRule" class="action-button">Cancel·lar</button>
+                </div>
+            </div>
+        </div>
+    </body>
+    </html>

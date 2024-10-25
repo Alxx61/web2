@@ -41,9 +41,9 @@
     </ul>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Control</a>
-        <a href="#">Consum</a>
-        <a href="#">Automatitzacions</a>
+        <a href="index(3).html">Control</a>
+        <a href="consum.html">Consum</a>
+        <a href="automatitzacions.html">Automatitzacions</a>
         <a href="mailto:alex.bosch@inspereborrell.cat">Contact</a>
     </div>
     <script>
@@ -74,17 +74,27 @@
 
     </div>
 
-    <div id="temperaturepanel" class="">
-        <h2 class="title">Temperatura</h2>
+    <div id="temperaturepanel">
+        <h2 class="title"> Temperatura </h2>
         <div class="background-blurtemp"></div>
+    
         <img id="buttontemp" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
         <img style="grid-area: 1/1/2/10; z-index: 1;" width="100%" height="170px" src="https://i.imgur.com/3O4SiCt.png">
         <div style="grid-area: 1/2/3/4; z-index: 0; width: 100%; transform: translate(80px, 80px);" id="slider"></div>
-        <h3 class="title" style="grid-area: 4/1/5/5;">Accions ràpides</h3>
-        <div class="quick-actions">
-            <div id="fred"></div>
-            <div id="calent"></div>
-            <div id="ventilar"></div>
+        <h3 class="title" style="grid-area: 4/1/5/5;"> Accions ràpides</h3>
+        <div class="quickactions">
+            <button id="fred" class="action-button">
+                <i class="fas fa-snowflake"></i>
+                <span>Fred</span>
+            </button>
+            <button id="calent" class="action-button">
+                <i class="fas fa-fire"></i>
+                <span>Calent</span>
+            </button>
+            <button id="ventilar" class="action-button">
+                <i class="fas fa-fan"></i>
+                <span>Ventilar</span>
+            </button>
         </div>
     </div>
 

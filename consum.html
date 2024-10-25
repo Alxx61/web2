@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    
+    <!-- Your stylesheets -->
+    <link rel="stylesheet" href="style2.css" />
+    <link rel="stylesheet" href="consum.css" />
+    
+    <title>Consum Energètic</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+    </style>
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index(3).html">Control</a>
+        <a href="consum.html">Consum</a>
+        <a href="automatitzacions.html">Automatitzacions</a>
+        <a href="mailto:alex.bosch@inspereborrell.cat">Contact</a>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+    <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
+
+    <!-- Main Content -->
+    <div id="consumPanel">
+        <!-- Current Usage Section -->
+        <div class="current-usage">
+            <h2>Consum Actual</h2>
+            <div class="usage-cards">
+                <div class="usage-card electricity">
+                    <i class="fas fa-bolt"></i>
+                    <div class="usage-info">
+                        <h3>Electricitat</h3>
+                        <span id="currentPower">0 kW</span>
+                    </div>
+                </div>
+                <div class="usage-card water">
+                    <i class="fas fa-tint"></i>
+                    <div class="usage-info">
+                        <h3>Aigua</h3>
+                        <span id="currentWater">0 L/h</span>
+                    </div>
+                </div>
+                <div class="usage-card gas">
+                    <i class="fas fa-fire"></i>
+                    <div class="usage-info">
+                        <h3>Gas</h3>
+                        <span id="currentGas">0 m³/h</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-container">
+            <!-- Power Consumption Chart -->
+            <div class="chart-card">
+                <h3>Consum Elèctric</h3>
+                <canvas id="powerChart"></canvas>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Avui</span>
+                        <span id="powerToday" class="stat-value">0 kWh</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Aquest mes</span>
+                        <span id="powerMonth" class="stat-value">0 kWh</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Water Consumption Chart -->
+            <div class="chart-card">
+                <h3>Consum d'Aigua</h3>
+                <canvas id="waterChart"></canvas>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Avui</span>
+                        <span id="waterToday" class="stat-value">0 L</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Aquest mes</span>
+                        <span id="waterMonth" class="stat-value">0 L</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gas Consumption Chart -->
+            <div class="chart-card">
+                <h3>Consum de Gas</h3>
+                <canvas id="gasChart"></canvas>
+                <div class="stats">
+                    <div class="stat-item">
+                        <span class="stat-label">Avui</span>
+                        <span id="gasToday" class="stat-value">0 m³</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Aquest mes</span>
+                        <span id="gasMonth" class="stat-value">0 m³</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cost Summary Section -->
+        <div class="cost-summary">
+            <h2>Resum de Costos</h2>
+            <div class="cost-cards">
+                <div class="cost-card">
+                    <h3>Cost Diari Estimat</h3>
+                    <span id="dailyCost">0.00 €</span>
+                </div>
+                <div class="cost-card">
+                    <h3>Cost Mensual Actual</h3>
+                    <span id="monthlyCost">0.00 €</span>
+                </div>
+                <div class="cost-card">
+                    <h3>Previsió Mensual</h3>
+                    <span id="monthlyForecast">0.00 €</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="consum.js"></script>
+</body>
+</html>

@@ -1,0 +1,201 @@
+#consumPanel {
+    grid-area: 2 / 1 / 10 / 16;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 20px;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+/* Current Usage Section */
+.current-usage {
+    padding: 20px;
+}
+
+.current-usage h2 {
+    color: white;
+    font-family: 'Karla', sans-serif;
+    margin-bottom: 20px;
+}
+
+.usage-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.usage-card {
+    background-color: #444444;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.usage-card:hover {
+    transform: translateY(-5px);
+}
+
+.usage-card i {
+    font-size: 2.5em;
+    color: white;
+}
+
+.usage-card.electricity i { color: #FFD700; }
+.usage-card.water i { color: #00CED1; }
+.usage-card.gas i { color: #FF6B6B; }
+
+.usage-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.usage-info h3 {
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+    margin: 0;
+    font-size: 1.2em;
+}
+
+.usage-info span {
+    color: #cccccc;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.5em;
+    letter-spacing: 0.5px;
+}
+
+/* Charts Section */
+.charts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.chart-card {
+    background-color: #444444;
+    border-radius: 15px;
+    padding: 20px;
+}
+
+.chart-card h3 {
+    color: white;
+    font-family: 'Karla', sans-serif;
+    margin-bottom: 15px;
+}
+
+.chart-card canvas {
+    width: 100% !important;
+    height: 200px !important;
+    margin-bottom: 15px;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stat-label {
+    color: #cccccc;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    font-size: 0.9em;
+    letter-spacing: 0.2px;
+}
+
+.stat-value {
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.2em;
+    letter-spacing: 0.5px;
+}
+
+/* Cost Summary Section */
+.cost-summary {
+    padding: 20px;
+}
+
+.cost-summary h2 {
+    color: white;
+    font-family: 'Karla', sans-serif;
+    margin-bottom: 20px;
+}
+
+.cost-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.cost-card {
+    background-color: #444444;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+}
+
+.cost-card h3 {
+    color: white;
+    font-family: 'Karla', sans-serif;
+    font-size: 1em;
+    margin-bottom: 10px;
+}
+
+.cost-card span {
+    color: #4CAF50;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    font-size: 1.8em;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .usage-cards,
+    .charts-container,
+    .cost-cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Update font styles */
+h2, h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+.usage-info h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 400;
+}
+
+.usage-info span,
+.stat-value,
+.cost-card span {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.stat-label,
+.cost-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.2px;
+}

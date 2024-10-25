@@ -1,0 +1,153 @@
+/* Automation Panel Styles */
+#automationPanel {
+    grid-area: 2 / 1 / 10 / 16;
+    background-color: #777777;
+    border-radius: 20px;
+    margin: 10px;
+    padding: 20px;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 20px;
+}
+
+#addRuleBtn {
+    width: 200px;
+    height: 50px;
+    background-color: #4c2020;
+    justify-self: end;
+    margin-right: 20px;
+}
+
+#rulesList {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.rule-card {
+    background-color: #444444;
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    transition: transform 0.2s ease;
+}
+
+.rule-card:hover {
+    transform: translateY(-5px);
+}
+
+.rule-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.rule-title {
+    font-family: 'Karla', sans-serif;
+    color: white;
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.rule-controls {
+    display: flex;
+    gap: 10px;
+}
+
+.rule-control-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    transition: color 0.2s ease;
+}
+
+.rule-control-btn:hover {
+    color: #ff3333;
+}
+
+.rule-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.rule-condition, .rule-action {
+    font-family: 'Karla', sans-serif;
+    color: #cccccc;
+    font-size: 14px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #777777;
+    margin: 50px auto;
+    padding: 30px;
+    border-radius: 20px;
+    width: 80%;
+    max-width: 600px;
+    color: white;
+    font-family: 'Karla', sans-serif;
+}
+
+.rule-section {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 15px;
+}
+
+.rule-select {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #444444;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-family: 'Karla', sans-serif;
+}
+
+.rule-options {
+    margin-top: 15px;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.modal-buttons .action-button {
+    width: 120px;
+    height: 40px;
+}
+
+#saveRule {
+    background-color: #123f1c;
+}
+
+#cancelRule {
+    background-color: #4c2020;
+}

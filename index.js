@@ -905,3 +905,634 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const sleepSlider = document.getElementById('sleepSlider');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    const sleepRangeDisplay = document.getElementById('sleepRange');
+
+    const ctx = sleepSlider.getContext('2d');
+    const centerX = sleepSlider.width / 2;
+    const centerY = sleepSlider.height / 2;
+    const radius = 100;
+
+    let startAngle = 0; // Initial start angle (12 AM)
+    let endAngle = Math.PI; // Initial end angle (12 PM)
+    const totalHours = 24;
+
+    let dragging = null; // 'start' or 'end'
+
+    function drawSlider() {
+        ctx.clearRect(0, 0, sleepSlider.width, sleepSlider.height);
+
+        // Draw hour markers
+        for (let hour = 0; hour < totalHours; hour++) {
+            const angle = (hour / totalHours) * 2 * Math.PI - Math.PI / 2;
+            const xInner = centerX + Math.cos(angle) * (radius - 10);
+            const yInner = centerY + Math.sin(angle) * (radius - 10);
+            const xOuter = centerX + Math.cos(angle) * radius;
+            const yOuter = centerY + Math.sin(angle) * radius;
+
+            ctx.beginPath();
+            ctx.moveTo(xInner, yInner);
+            ctx.lineTo(xOuter, yOuter);
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Label every 3 hours
+            if (hour % 3 === 0) {
+                const xText = centerX + Math.cos(angle) * (radius - 25);
+                const yText = centerY + Math.sin(angle) * (radius - 25);
+                ctx.font = '12px Karla';
+                ctx.fillStyle = '#ffffff';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                let label = '';
+                if (hour === 0) label = '12 AM';
+                else if (hour < 12) label = `${hour} AM`;
+                else if (hour === 12) label = '12 PM';
+                else label = `${hour - 12} PM`;
+                ctx.fillText(label, xText, yText);
+            }
+        }
+
+        // Draw Sleep Arc
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, startAngle, endAngle, true);
+        ctx.strokeStyle = '#6a0dad'; // Purple color for Sleep time
+        ctx.lineWidth = 10;
+        ctx.stroke();
+
+        // Draw Start Handle
+        const startX = centerX + Math.cos(startAngle) * radius;
+        const startY = centerY + Math.sin(startAngle) * radius;
+        ctx.beginPath();
+        ctx.arc(startX, startY, 8, 0, 2 * Math.PI);
+        ctx.fillStyle = '#6a0dad';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        // Draw End Handle
+        const endX = centerX + Math.cos(endAngle) * radius;
+        const endY = centerY + Math.sin(endAngle) * radius;
+        ctx.beginPath();
+        ctx.arc(endX, endY, 8, 0, 2 * Math.PI);
+        ctx.fillStyle = '#6a0dad';
+        ctx.fill();
+        ctx.strokeStyle = '#ffffff';
+        ctx.stroke();
+
+        // Update Sleep Range Display
+        const startTime = angleToTime(startAngle);
+        const endTime = angleToTime(endAngle);
+        sleepRangeDisplay.textContent = `Sleep Time: ${startTime} - ${endTime}`;
+
+        // Update icons
+        moonIcon.classList.toggle('active', true);
+        sunIcon.classList.toggle('active', false);
+    }
+
+    function angleToTime(angle) {
+        let hours = Math.round((angle + Math.PI / 2) / (Math.PI * 2) * 24) % 24;
+        const period = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12;
+        hours = hours ? hours : 12; // Convert 0 to 12
+        return `${hours}:00 ${period}`;
+    }
+
+    function getAngle(x, y) {
+        const dx = x - centerX;
+        const dy = y - centerY;
+        let angle = Math.atan2(dy, dx);
+        if (angle < 0) angle += Math.PI * 2;
+        return angle;
+    }
+
+    function handleMouseDown(e) {
+        const rect = sleepSlider.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const clickAngle = getAngle(x, y);
+
+        const distStart = Math.abs(clickAngle - startAngle);
+        const distEnd = Math.abs(clickAngle - endAngle);
+
+        if (distStart < distEnd) {
+            dragging = 'start';
+        } else {
+            dragging = 'end';
+        }
+    }
+
+    function handleMouseMove(e) {
+        if (!dragging) return;
+
+        const rect = sleepSlider.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        let angle = getAngle(x, y);
+
+        if (dragging === 'start') {
+            startAngle = angle;
+        } else if (dragging === 'end') {
+            endAngle = angle;
+        }
+
+        drawSlider();
+    }
+
+    function handleMouseUp() {
+        dragging = null;
+    }
+
+    // Initialize the slider
+    drawSlider();
+
+    // Event listeners for interaction
+    sleepSlider.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseup', handleMouseUp);
+
+    // Prevent text selection while dragging
+    sleepSlider.addEventListener('dragstart', function(e) { e.preventDefault(); });
+
+    // Touch support
+    sleepSlider.addEventListener('touchstart', function(e) {
+        const touch = e.touches[0];
+        handleMouseDown(touch);
+    }, { passive: false });
+
+    sleepSlider.addEventListener('touchmove', function(e) {
+        const touch = e.touches[0];
+        handleMouseMove(touch);
+        e.preventDefault();
+    }, { passive: false });
+
+    sleepSlider.addEventListener('touchend', handleMouseUp);
+});
+
+
+
+
+// Automation Panel Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const addRuleBtn = document.getElementById('addRuleBtn');
+    const modal = document.getElementById('newRuleModal');
+    const saveRuleBtn = document.getElementById('saveRule');
+    const cancelRuleBtn = document.getElementById('cancelRule');
+    const triggerType = document.getElementById('triggerType');
+    const actionType = document.getElementById('actionType');
+    const rulesList = document.getElementById('rulesList');
+
+    // Show modal when clicking Add Rule button
+    addRuleBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        updateTriggerOptions();
+        updateActionOptions();
+    });
+
+    // Hide modal when clicking Cancel
+    cancelRuleBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Handle trigger type changes
+    triggerType.addEventListener('change', updateTriggerOptions);
+    actionType.addEventListener('change', updateActionOptions);
+
+    function updateTriggerOptions() {
+        const triggerOptions = document.getElementById('triggerOptions');
+        const selectedTrigger = triggerType.value;
+        
+        let optionsHTML = '';
+        
+        switch(selectedTrigger) {
+            case 'time':
+                optionsHTML = `
+                    <input type="time" id="triggerTime" class="rule-input">
+                    <div class="day-selector">
+                        <label><input type="checkbox" value="mon"> Dilluns</label>
+                        <label><input type="checkbox" value="tue"> Dimarts</label>
+                        <label><input type="checkbox" value="wed"> Dimecres</label>
+                        <label><input type="checkbox" value="thu"> Dijous</label>
+                        <label><input type="checkbox" value="fri"> Divendres</label>
+                        <label><input type="checkbox" value="sat"> Dissabte</label>
+                        <label><input type="checkbox" value="sun"> Diumenge</label>
+                    </div>
+                `;
+                break;
+            case 'temperature':
+                optionsHTML = `
+                    <div class="condition-input">
+                        <select id="tempCondition" class="rule-select">
+                            <option value="above">Per sobre de</option>
+                            <option value="below">Per sota de</option>
+                        </select>
+                        <input type="number" id="tempValue" class="rule-input" min="0" max="40" step="0.5">
+                        <span>°C</span>
+                    </div>
+                `;
+                break;
+            case 'motion':
+                optionsHTML = `
+                    <select id="motionLocation" class="rule-select">
+                        <option value="living">Sala d'estar</option>
+                        <option value="kitchen">Cuina</option>
+                        <option value="bedroom">Habitació</option>
+                        <option value="bathroom">Bany</option>
+                    </select>
+                    <select id="motionCondition" class="rule-select">
+                        <option value="detected">Detectat moviment</option>
+                        <option value="notDetected">No detectat moviment per</option>
+                    </select>
+                    <input type="number" id="motionDuration" class="rule-input" min="1" max="60">
+                    <span>minuts</span>
+                `;
+                break;
+            case 'light':
+                optionsHTML = `
+                    <div class="condition-input">
+                        <select id="lightCondition" class="rule-select">
+                            <option value="above">Per sobre de</option>
+                            <option value="below">Per sota de</option>
+                        </select>
+                        <input type="number" id="lightValue" class="rule-input" min="0" max="100" step="1">
+                        <span>%</span>
+                    </div>
+                `;
+                break;
+        }
+        
+        triggerOptions.innerHTML = optionsHTML;
+    }
+
+    function updateActionOptions() {
+        const actionOptions = document.getElementById('actionOptions');
+        const selectedAction = actionType.value;
+        
+        let optionsHTML = '';
+        
+        switch(selectedAction) {
+            case 'lights':
+                optionsHTML = `
+                    <select id="lightRoom" class="rule-select">
+                        <option value="living">Sala d'estar</option>
+                        <option value="kitchen">Cuina</option>
+                        <option value="bedroom">Habitació</option>
+                        <option value="bathroom">Bany</option>
+                    </select>
+                    <select id="lightAction" class="rule-select">
+                        <option value="on">Encendre</option>
+                        <option value="off">Apagar</option>
+                        <option value="dim">Ajustar intensitat</option>
+                    </select>
+                    <div id="dimmerControl" style="display: none;">
+                        <input type="range" min="0" max="100" value="50" class="rule-slider">
+                        <span>50%</span>
+                    </div>
+                `;
+                break;
+            case 'blinds':
+                optionsHTML = `
+                    <select id="blindRoom" class="rule-select">
+                        <option value="living">Sala d'estar</option>
+                        <option value="bedroom">Habitació</option>
+                    </select>
+                    <select id="blindAction" class="rule-select">
+                        <option value="open">Obrir</option>
+                        <option value="close">Tancar</option>
+                        <option value="partial">Ajustar</option>
+                    </select>
+                    <div id="blindControl" style="display: none;">
+                        <input type="range" min="0" max="100" value="50" class="rule-slider">
+                        <span>50%</span>
+                    </div>
+                `;
+                break;
+            case 'thermostat':
+                optionsHTML = `
+                    <select id="thermostatMode" class="rule-select">
+                        <option value="heat">Calefacció</option>
+                        <option value="cool">Refrigeració</option>
+                        <option value="auto">Automàtic</option>
+                    </select>
+                    <input type="number" id="thermostatTemp" class="rule-input" min="15" max="30" step="0.5">
+                    <span>°C</span>
+                `;
+                break;
+            case 'appliance':
+                optionsHTML = `
+                    <select id="applianceType" class="rule-select">
+                        <option value="coffee">Cafetera</option>
+                        <option value="dishwasher">Rentavaixelles</option>
+                        <option value="washer">Rentadora</option>
+                        <option value="robot">Robot aspirador</option>
+                    </select>
+                    <select id="applianceAction" class="rule-select">
+                        <option value="start">Iniciar</option>
+                        <option value="stop">Aturar</option>
+                    </select>
+                `;
+                break;
+        }
+        
+        actionOptions.innerHTML = optionsHTML;
+        
+        // Add event listeners for special controls
+        if (selectedAction === 'lights') {
+            const lightAction = document.getElementById('lightAction');
+            const dimmerControl = document.getElementById('dimmerControl');
+            lightAction.addEventListener('change', () => {
+                dimmerControl.style.display = lightAction.value === 'dim' ? 'block' : 'none';
+            });
+        }
+        
+        if (selectedAction === 'blinds') {
+            const blindAction = document.getElementById('blindAction');
+            const blindControl = document.getElementById('blindControl');
+            blindAction.addEventListener('change', () => {
+                blindControl.style.display = blindAction.value === 'partial' ? 'block' : 'none';
+            });
+        }
+    }
+
+    // Save rule
+    saveRuleBtn.addEventListener('click', () => {
+        const rule = createRuleFromInputs();
+        addRuleToList(rule);
+        modal.style.display = 'none';
+    });
+
+    function createRuleFromInputs() {
+        // Create rule object based on form inputs
+        // This is a simplified version - you'll want to add more validation and data collection
+        return {
+            id: Date.now(),
+            trigger: {
+                type: triggerType.value,
+                // Add more trigger details based on type
+            },
+            action: {
+                type: actionType.value,
+                // Add more action details based on type
+            }
+        };
+    }
+
+    function addRuleToList(rule) {
+        const ruleCard = document.createElement('div');
+        ruleCard.className = 'rule-card';
+        ruleCard.dataset.id = rule.id; // Afegim l'ID com a data attribute
+        ruleCard.innerHTML = `
+            <div class="rule-header">
+                <span class="rule-title">Nova Automatització</span>
+                <div class="rule-controls">
+                    <button class="rule-control-btn edit-btn">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                    <button class="rule-control-btn delete-btn">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="rule-content">
+                <div class="rule-condition">
+                    <i class="fas fa-clock"></i> SI: ${formatTrigger(rule.trigger)}
+                </div>
+                <div class="rule-action">
+                    <i class="fas fa-magic"></i> LLAVORS: ${formatAction(rule.action)}
+                </div>
+            </div>
+        `;
+        
+        // Afegim els event listeners als botons
+        const editBtn = ruleCard.querySelector('.edit-btn');
+        const deleteBtn = ruleCard.querySelector('.delete-btn');
+
+        editBtn.addEventListener('click', () => editRule(rule));
+        deleteBtn.addEventListener('click', () => deleteRule(rule.id));
+
+        rulesList.appendChild(ruleCard);
+    }
+
+    function formatTrigger(trigger) {
+        // Format trigger description based on type
+        return `Condició: ${trigger.type}`;
+    }
+
+    function formatAction(action) {
+        // Format action description based on type
+        return `Acció: ${action.type}`;
+    }
+});
+
+// Global functions for rule management
+window.editRule = function(ruleId) {
+    console.log('Editing rule:', ruleId);
+    // Implement edit functionality
+};
+
+window.deleteRule = function(ruleId) {
+    const ruleElement = document.querySelector(`.rule-card[data-id="${ruleId}"]`);
+    if (ruleElement && confirm('Estàs segur que vols eliminar aquesta automatització?')) {
+        ruleElement.remove();
+    }
+};
+
+// ... (codi existent) ...
+
+function addRuleToList(rule) {
+    const ruleCard = document.createElement('div');
+    ruleCard.className = 'rule-card';
+    ruleCard.dataset.id = rule.id; // Afegim l'ID com a data attribute
+    ruleCard.innerHTML = `
+        <div class="rule-header">
+            <span class="rule-title">Nova Automatització</span>
+            <div class="rule-controls">
+                <button class="rule-control-btn edit-btn">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="rule-control-btn delete-btn">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </div>
+        <div class="rule-content">
+            <div class="rule-condition">
+                <i class="fas fa-clock"></i> SI: ${formatTrigger(rule.trigger)}
+            </div>
+            <div class="rule-action">
+                <i class="fas fa-magic"></i> LLAVORS: ${formatAction(rule.action)}
+            </div>
+        </div>
+    `;
+
+    // Afegim els event listeners als botons
+    const editBtn = ruleCard.querySelector('.edit-btn');
+    const deleteBtn = ruleCard.querySelector('.delete-btn');
+
+    editBtn.addEventListener('click', () => editRule(rule));
+    deleteBtn.addEventListener('click', () => deleteRule(rule.id));
+
+    rulesList.appendChild(ruleCard);
+}
+
+// Funció per editar una regla
+function editRule(rule) {
+    // Mostrem el modal
+    const modal = document.getElementById('newRuleModal');
+    modal.style.display = 'block';
+
+    // Emplenem els camps amb les dades existents
+    const triggerType = document.getElementById('triggerType');
+    const actionType = document.getElementById('actionType');
+
+    triggerType.value = rule.trigger.type;
+    actionType.value = rule.action.type;
+
+    // Actualitzem les opcions
+    updateTriggerOptions();
+    updateActionOptions();
+
+    // Emplenem els camps específics segons el tipus de trigger i action
+    // ... (aquí pots afegir més lògica per emplenar camps específics) ...
+
+    // Modifiquem el comportament del botó de desar
+    const saveBtn = document.getElementById('saveRule');
+    saveBtn.onclick = () => {
+        // Guardem els canvis
+        const updatedRule = createRuleFromInputs();
+        updatedRule.id = rule.id; // Mantenim el mateix ID
+
+        // Eliminem la targeta antiga
+        const oldCard = document.querySelector(`.rule-card[data-id="${rule.id}"]`);
+        if (oldCard) {
+            oldCard.remove();
+        }
+
+        // Afegim la targeta actualitzada
+        addRuleToList(updatedRule);
+
+        // Tanquem el modal
+        modal.style.display = 'none';
+
+        // Restaurem el comportament original del botó de desar
+        saveBtn.onclick = () => {
+            const newRule = createRuleFromInputs();
+            addRuleToList(newRule);
+            modal.style.display = 'none';
+        };
+    };
+}
+
+// Funció per eliminar una regla
+function deleteRule(ruleId) {
+    const ruleCard = document.querySelector(`.rule-card[data-id="${ruleId}"]`);
+    if (ruleCard && confirm('Estàs segur que vols eliminar aquesta automatització?')) {
+        // Afegim una animació de desaparició
+        ruleCard.style.transition = 'all 0.3s ease';
+        ruleCard.style.opacity = '0';
+        ruleCard.style.transform = 'scale(0.8)';
+
+        // Eliminem l'element després de l'animació
+        setTimeout(() => {
+            ruleCard.remove();
+        }, 300);
+    }
+}
+
+// Funció millorada per crear una regla des dels inputs
+function createRuleFromInputs() {
+    const triggerType = document.getElementById('triggerType');
+    const actionType = document.getElementById('actionType');
+
+    const rule = {
+        id: Date.now(),
+        trigger: {
+            type: triggerType.value,
+            options: {}
+        },
+        action: {
+            type: actionType.value,
+            options: {}
+        }
+    };
+
+    // Recollim les opcions específiques segons el tipus de trigger
+    switch (triggerType.value) {
+        case 'time':
+            const time = document.getElementById('triggerTime')?.value;
+            const days = Array.from(document.querySelectorAll('.day-selector input:checked'))
+                .map(input => input.value);
+            rule.trigger.options = { time, days };
+            break;
+        case 'temperature':
+            rule.trigger.options = {
+                condition: document.getElementById('tempCondition')?.value,
+                value: document.getElementById('tempValue')?.value
+            };
+            break;
+        // ... (afegir més casos segons necessitat)
+    }
+
+    // Recollim les opcions específiques segons el tipus d'acció
+    switch (actionType.value) {
+        case 'lights':
+            rule.action.options = {
+                room: document.getElementById('lightRoom')?.value,
+                action: document.getElementById('lightAction')?.value,
+                intensity: document.getElementById('dimmerControl')?.querySelector('input')?.value
+            };
+            break;
+        case 'blinds':
+            rule.action.options = {
+                room: document.getElementById('blindRoom')?.value,
+                action: document.getElementById('blindAction')?.value,
+                position: document.getElementById('blindControl')?.querySelector('input')?.value
+            };
+            break;
+        // ... (afegir més casos segons necessitat)
+    }
+
+    return rule;
+}
+
+// Millorem les funcions de formatatge per mostrar més detalls
+function formatTrigger(trigger) {
+    let description = '';
+    switch (trigger.type) {
+        case 'time':
+            const days = trigger.options?.days?.join(', ') || 'tots els dies';
+            description = `a les ${trigger.options?.time || '00:00'} (${days})`;
+            break;
+        case 'temperature':
+            description = `temperatura ${trigger.options?.condition} ${trigger.options?.value}°C`;
+            break;
+        // ... (afegir més casos)
+        default:
+            description = trigger.type;
+    }
+    return description;
+}
+
+function formatAction(action) {
+    let description = '';
+    switch (action.type) {
+        case 'lights':
+            const intensity = action.options?.intensity ? ` al ${action.options.intensity}%` : '';
+            description = `${action.options?.action} llums ${action.options?.room}${intensity}`;
+            break;
+        case 'blinds':
+            const position = action.options?.position ? ` al ${action.options.position}%` : '';
+            description = `${action.options?.action} persianes ${action.options?.room}${position}`;
+            break;
+        // ... (afegir més casos)
+        default:
+            description = action.type;
+    }
+    return description;
+}
