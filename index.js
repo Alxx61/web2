@@ -93,65 +93,95 @@ function formatDate(date) {
     return `${day}, ${month} ${dayOfMonth}`;
 }
 
-function getWeather() {
-    var apiKey = '2817f8fcf6361f5d6e39b993d2852890//'; // Ensure this is your valid API key
-    var city = 'Puigcerda,ES';
-    var url = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`;
+// Constants
+const WEATHER_API = {
+    BASE_URL: 'https://api.openweathermap.org/data/2.5/weather',
+    KEY: 'API KEY' // Replace with your API key
+};
 
-    fetch(url)
-        .then(response => {
+class WeatherApp {
+    constructor(city = 'Puigcerda,ES') {
+        this.city = city;
+        this.init();
+    }
+
+    init() {
+        this.weatherNumber = document.getElementById("weathernumber");
+        this.weatherText = document.getElementById("weathertext");
+        this.sun3D = document.getElementById("sun3D");
+        this.cloud3D = document.getElementById("cloud3D");
+        
+        if (!this.weatherNumber || !this.weatherText) {
+            console.error('Required DOM elements not found');
+            return;
+        }
+
+        this.getWeather();
+    }
+
+    async getWeather() {
+        try {
+            const url = `${WEATHER_API.BASE_URL}?q=${encodeURIComponent(this.city)}&appid=${WEATHER_API.KEY}&units=metric`;
+            
+            const response = await fetch(url);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
-            return response.json();
-        })
-        .then(data => {
-            var tempCelsius = data.main.temp - 273.15; // Convert temperature from Kelvin to Celsius
-            var description = data.weather[0].description;
 
-            // Update temperature in weathernumber element
-            document.getElementById("weathernumber").innerHTML = Math.round(tempCelsius) + "&deg;C";
-
-            // Generate descriptive weather text based on conditions
-            var weatherText = generateWeatherText(description);
-            document.getElementById("weathertext").innerHTML = weatherText;
-        })
-        .catch(e => {
-            console.log('There was a problem with the fetch operation: ' + e.message);
-            document.getElementById('weathernumber').innerHTML = 'N/A';
-            document.getElementById('weathertext').innerHTML = 'Unable to fetch weather data.';
-        });
-}
-
-function generateWeatherText(description) {
-    var sun3DElement = document.getElementById("sun3D");
-    var cloud3DElement = document.getElementById("cloud3D");
-
-    // Hide both elements by default
-    if (sun3DElement) sun3DElement.style.display = "none";
-    if (cloud3DElement) cloud3DElement.style.display = "none";
-
-    // si inclou "clear"
-    if (description.toLowerCase().includes("clear")) {
-        if (sun3DElement) sun3DElement.style.display = "block";
-        return "Avui el cel estarà cerè.";
+            const data = await response.json();
+            this.updateWeatherDisplay(data);
+        } catch (error) {
+            console.error('Error fetching weather:', error);
+            this.handleError();
+        }
     }
-    // si inclou "cloud"
-    else if (description.toLowerCase().includes("cloud")) {
-        if (cloud3DElement) cloud3DElement.style.display = "block";
-        return "Avui el cel estarà ennuvolat.";
+
+    updateWeatherDisplay(data) {
+        // Update temperature (already in Celsius due to units=metric parameter)
+        const temperature = Math.round(data.main.temp);
+        this.weatherNumber.innerHTML = `${temperature}°C`;
+
+        // Update weather description
+        const description = data.weather[0].description;
+        this.weatherText.innerHTML = this.generateWeatherText(description);
     }
-    // si inclou "rain"
-    else if (description.toLowerCase().includes("rain")) {
-        return "Avui probablement hi haurà precipitació.";
-    }
-    // Otherwise
-    else {
+
+    generateWeatherText(description) {
+        // Hide both 3D elements initially
+        this.hideAllWeatherIcons();
+
+        const lowerDescription = description.toLowerCase();
+        
+        if (lowerDescription.includes("clear")) {
+            if (this.sun3D) this.sun3D.style.display = "block";
+            return "Avui el cel estarà serè.";
+        }
+        if (lowerDescription.includes("cloud")) {
+            if (this.cloud3D) this.cloud3D.style.display = "block";
+            return "Avui el cel estarà ennuvolat.";
+        }
+        if (lowerDescription.includes("rain")) {
+            return "Avui probablement hi haurà precipitació.";
+        }
         return description;
     }
+
+    hideAllWeatherIcons() {
+        if (this.sun3D) this.sun3D.style.display = "none";
+        if (this.cloud3D) this.cloud3D.style.display = "none";
+    }
+
+    handleError() {
+        if (this.weatherNumber) this.weatherNumber.innerHTML = 'N/A';
+        if (this.weatherText) this.weatherText.innerHTML = 'No s\'han pogut obtenir les dades meteorològiques.';
+        this.hideAllWeatherIcons();
+    }
 }
 
-window.onload = getWeather;
+// Initialize the app when the document is ready
+document.addEventListener('DOMContentLoaded', () => {
+    new WeatherApp();
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     const blindSlider = document.getElementById('blindSlider');
@@ -1286,15 +1316,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function addRuleToList(rule) {
         const ruleCard = document.createElement('div');
         ruleCard.className = 'rule-card';
-        ruleCard.dataset.id = rule.id; // Afegim l'ID com a data attribute
         ruleCard.innerHTML = `
             <div class="rule-header">
                 <span class="rule-title">Nova Automatització</span>
                 <div class="rule-controls">
-                    <button class="rule-control-btn edit-btn">
+                    <button class="rule-control-btn" onclick="editRule(${rule.id})">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="rule-control-btn delete-btn">
+                    <button class="rule-control-btn" onclick="deleteRule(${rule.id})">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -1309,13 +1338,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
         `;
         
-        // Afegim els event listeners als botons
-        const editBtn = ruleCard.querySelector('.edit-btn');
-        const deleteBtn = ruleCard.querySelector('.delete-btn');
-
-        editBtn.addEventListener('click', () => editRule(rule));
-        deleteBtn.addEventListener('click', () => deleteRule(rule.id));
-
         rulesList.appendChild(ruleCard);
     }
 
