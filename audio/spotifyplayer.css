@@ -1,0 +1,211 @@
+.player {
+    background: #282828;
+    border-radius: 12px;
+    padding: 20px;
+    color: white;
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.player-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.now-playing {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.now-playing img {
+    width: 60px;
+    height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+}
+
+.track-info {
+    flex-grow: 1;
+}
+
+#current-track-name {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+#current-track-artist {
+    font-size: 14px;
+    color: #b3b3b3;
+}
+
+.progress {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    flex-grow: 1;
+    height: 4px;
+    background: #404040;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+#progress {
+    background: #1db954;
+    height: 100%;
+    width: 0%;
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.control-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.control-button:hover {
+    transform: scale(1.1);
+}
+
+.volume-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#volume {
+    width: 100px;
+}
+/* Add these styles at the end of your existing CSS */
+.soundcloud-import {
+    display: flex;
+    gap: 10px;
+    margin: 10px auto;
+    max-width: 600px;
+    padding: 0 20px;
+}
+
+#soundcloud-url {
+    flex-grow: 1;
+    padding: 8px 12px;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    background: #282828;
+    color: white;
+}
+
+.import-button {
+    background: #ff0000; /* YouTube red */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+
+.import-button:hover {
+    background: #ff1a1a;
+}
+
+/* Add these styles for the popup */
+.popup-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup-content {
+    background: #282828;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+}
+
+.popup-content h3 {
+    color: white;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+#video-url {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #404040;
+    border-radius: 4px;
+    background: #181818;
+    color: white;
+    margin-bottom: 15px;
+    box-sizing: border-box;
+}
+
+.popup-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.import-button {
+    background: #ff0000;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.close-button {
+    background: #404040;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
+}
+
+/* Add an import button to the player controls */
+.import-track-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.import-track-btn:hover {
+    transform: scale(1.1);
+}

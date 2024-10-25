@@ -8,11 +8,12 @@
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
         <script src="https://cdn.jsdelivr.net/npm/@andreruffert/range-slider-element@3.1.0"></script>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
         <script src="index.js"></script>
         <script src="https://sdk.scdn.co/spotify-player.js"></script>
+        <script src="https://connect.soundcloud.com/sdk/sdk-3.3.2.js"></script>
     
-        <script src="spotifyplayer.js"></script>
+        <script src="audio/audioplayer.js"></script>
     
         <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
         <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
@@ -21,7 +22,7 @@
     
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
         <link rel="stylesheet" href="style2.css" />
-        <link rel="stylesheet" href="spotifyplayer.css" />
+        <link rel="stylesheet" href="audio/spotifyplayer.css" />
         <link rel="stylesheet" href="switch.css" />
         <link rel="stylesheet" href="blind.css" />
     
@@ -134,19 +135,55 @@
     
 
 
-        <div class="player" style="border: solid 5px #b94949; position: relative; width: 100%; height: 350px; overflow: hidden; border-radius: 20px; background-image: url('https://t2.genius.com/unsafe/855x0/https%3A%2F%2Fimages.genius.com%2F44a0cd3230fbcc70ce7d2a47ba7ec708.1000x1000x1.jpg'); background-size: cover; background-position: center;">
-            <div style="position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent); display: flex; flex-direction: column; align-items: center; justify-content: center;">
-                <div class="info" style="font-family: 'Karla', sans-serif; color: white; text-align: center; margin-bottom: 10px;">
-                    <h2 id="song-title" style="font-size: 24px; margin: 0;">NIGHTS LIKE THIS P2</h2>
-                    <p id="artist-name" style="font-size: 18px; margin: 0;">The Kid LAROI</p>
+    <div id="audio-player" class="player">
+        <div class="player-content">
+            <div class="now-playing">
+                <img id="current-track-image" src="https://i.imgur.com/NvnMUTt.png" alt="Album Art">
+                <div class="track-info">
+                    <div id="current-track-name">No track selected</div>
+                    <div id="current-track-artist">No artist</div>
                 </div>
-                <div class="controls" style="display: flex; justify-content: center; gap: 20px;">
-                    <button id="prev" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;"><i class="fas fa-backward"></i></button>
-                    <button id="play-pause" class="play-pause" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;"><i class="fas fa-play"></i></button>
-                    <button id="next" style="background: none; border: none; color: white; font-size: 24px; cursor: pointer;"><i class="fas fa-forward"></i></button>
+            </div>
+            <div class="progress">
+                <span id="current-time">0:00</span>
+                <div class="progress-bar">
+                    <div id="progress"></div>
+                </div>
+                <span id="duration">0:00</span>
+            </div>
+            <div class="controls">
+                <button id="prev-btn" class="control-button">
+                    <i class="fas fa-backward"></i>
+                </button>
+                <button id="play-btn" class="control-button">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button id="next-btn" class="control-button">
+                    <i class="fas fa-forward"></i>
+                </button>
+                <button id="import-track-btn" class="control-button">
+                    <i class="fas fa-plus"></i>
+                </button>
+                <div class="volume-control">
+                    <i class="fas fa-volume-up"></i>
+                    <input type="range" id="volume" min="0" max="100" value="100">
                 </div>
             </div>
         </div>
+    </div>
+
+    <div id="youtube-popup" class="popup-overlay">
+        <div class="popup-content">
+            <h3>Import YouTube Track</h3>
+            <input type="text" id="video-url" placeholder="Paste YouTube video URL here">
+            <div class="popup-buttons">
+                <button id="import-video" class="import-button">
+                    <i class="fab fa-youtube"></i> Import
+                </button>
+                <button id="close-popup" class="close-button">Cancel</button>
+            </div>
+        </div>
+    </div>
     
 <!-- Sleep Scheduler Panel -->
 <div id="sleeppanel">
@@ -165,8 +202,6 @@
 </div>
     
     
-
-
 
 
 
