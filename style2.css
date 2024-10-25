@@ -702,7 +702,7 @@ body {
     flex-direction: row; /* Ensure horizontal layout */
     justify-content: center; /* Center items horizontally */
     align-items: flex-start; /* Align items at the start */
-    grid-area: 7/6/10/12;
+    grid-area: 7/6/12/12;
     background-color: #777777;
     border-radius: 20px;
     margin: 10px; /* Add some margin for spacing */
@@ -1170,43 +1170,36 @@ background-color: red;
 /* Flex Devices Panel */
 
 .flex-devices {
-    display: flex;
-    flex-direction: row; /* Change to row for horizontal layout */
-    flex-wrap: wrap; /* Allow wrapping if necessary */
-    justify-content: space-around; /* Distribute devices evenly */
-    align-items: center; /* Center items vertically */
-    background-color: #444444;
+    grid-area: 7/6/11/12;
+    background-color: #777777;
     border-radius: 20px;
     margin: 10px;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    z-index: 0;
-}
-
-.flex-itemsdevices {
+    padding: 20px;
     display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    justify-content: space-between;
+    flex-direction: column;
 }
 
-.flex-itemsdevices img {
-    margin-right: 20px;
-    width: 40px;
-    height: 40px;
+.flex-devices .title {
+    color: white;
+    font-family: 'Karla', sans-serif;
+    margin-bottom: 20px;
 }
 
-.flex-itemsdevices .onoffswitch {
-    margin-left: auto;
+.devices-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    padding: 10px;
 }
 
 .device-container {
-    display: flex;
-    align-items: center;
     background-color: #555555;
-    padding: 10px;
-    border-radius: 10px;
-    width: 100%;
+    border-radius: 15px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;  /* Changed to column */
+    align-items: center;
+    gap: 15px;  /* Added gap between elements */
     transition: background-color 0.3s ease;
 }
 
@@ -1214,27 +1207,60 @@ background-color: red;
     background-color: #666666;
 }
 
-.device-container .onoffswitch-label {
-    border-color: #8DAEE0;
+.device-container img {
+    width: 35px;
+    height: 35px;
+    filter: invert(1);
 }
 
-.device-container .onoffswitch-switch {
-    border-color: #8DAEE0;
+/* Toggle Switch Styles */
+.onoffswitch {
+    position: relative;
+    width: 50px;
+    height: 26px;
 }
 
-/* Additional Styling if needed */
-
-.tags {
-    font-size: 14px;
-    color: #ffffff;
+.onoffswitch-checkbox {
+    display: none;
 }
 
-.action-button {
-    transition: background-color 0.3s ease, transform 0.3s ease;
+.onoffswitch-label {
+    display: block;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid #999999;
+    border-radius: 20px;
+    margin: 0;
+    height: 24px;  /* Explicit height */
+    background-color: #ccc;
+    transition: all 0.3s ease;
 }
 
-.onoffswitch-label:hover {
-    background-color: #dddddd;
+.onoffswitch-switch {
+    display: block;
+    width: 18px;
+    height: 18px;
+    background: #FFFFFF;
+    position: absolute;
+    top: 4px;
+    bottom: 0;
+    right: 28px;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);  /* Added shadow for depth */
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.onoffswitch-checkbox:not(:checked) + .onoffswitch-label {
+    background-color: #ccc;
+}
+
+.onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
+    right: 4px;
 }
 
 #heregoestime {
@@ -1250,7 +1276,6 @@ background-color: red;
 #sleeppanel {
     grid-area: 7 / 1 / 13 / 5; /* Adjust grid area as needed */
     background-color: #777777;
-    padding: 20px;
     border-radius: 20px;
     margin: 10px;
     position: relative;
@@ -1318,3 +1343,4 @@ background-color: red;
     margin-bottom: 5px;
     transform: translate(0px, -15px);
 }
+
