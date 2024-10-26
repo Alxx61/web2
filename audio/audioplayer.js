@@ -6,221 +6,226 @@ const SC_CLIENT_ID = 'YOUR_SOUNDCLOUD_CLIENT_ID'; // You'll need to get this fro
 
 class AudioPlayer {
     constructor() {
-        this.currentTrack = null;
+        this.audio = new Audio();
         this.isPlaying = false;
-        this.player = null;
+        this.isYouTube = false;
+        this.ytPlayer = null;
         
-        // Load YouTube IFrame API first
-        if (!window.YT) {
-            const tag = document.createElement('script');
-            tag.src = 'https://www.youtube.com/iframe_api';
-            const firstScriptTag = document.getElementsByTagName('script')[0];
-            firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-        }
+        // Load YouTube IFrame API
+        const tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-        // Initialize after DOM is fully loaded
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', () => this.initialize());
-        } else {
-            this.initialize();
-        }
-    }
-
-    initialize() {
         this.initializeElements();
         this.bindEvents();
-        this.initializeYouTubeImport();
     }
 
     initializeElements() {
-        // Check if elements exist before assigning
         this.playBtn = document.getElementById('play-btn');
         this.volumeSlider = document.getElementById('volume');
+        this.fileInput = document.getElementById('audio-upload');
         this.trackImage = document.getElementById('current-track-image');
         this.trackName = document.getElementById('current-track-name');
         this.trackArtist = document.getElementById('current-track-artist');
-
-        if (!this.playBtn || !this.volumeSlider || !this.trackImage || 
-            !this.trackName || !this.trackArtist) {
-            console.error('Required elements not found in the DOM');
-            return;
-        }
+        this.progressBar = document.getElementById('progress');
+        this.currentTime = document.getElementById('current-time');
+        this.duration = document.getElementById('duration');
+        this.progressContainer = document.querySelector('.progress-bar');
+        
+        this.linkInput = document.createElement('input');
+        this.linkInput.type = 'text';
+        this.linkInput.placeholder = 'Enganxa un link de YouTube...';
+        this.linkInput.className = 'link-input';
+        
+        // Insert link input after file input
+        this.fileInput.parentNode.appendChild(this.linkInput);
+        
+        // Add hidden YouTube container
+        this.ytContainer = document.createElement('div');
+        this.ytContainer.id = 'yt-player';
+        this.ytContainer.style.display = 'none';
+        document.body.appendChild(this.ytContainer);
     }
 
     bindEvents() {
-        if (this.playBtn) {
-            this.playBtn.addEventListener('click', () => this.togglePlay());
-        }
-        if (this.volumeSlider) {
-            this.volumeSlider.addEventListener('input', (e) => this.updateVolume(e.target.value));
-        }
+        this.playBtn.addEventListener('click', () => this.togglePlay());
+        this.volumeSlider.addEventListener('input', (e) => this.updateVolume(e.target.value));
+        this.fileInput.addEventListener('change', (e) => this.handleFileUpload(e));
+        this.linkInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                this.handleYouTubeLink(e.target.value);
+            }
+        });
+        
+        // Only bind audio events for local files
+        this.audio.addEventListener('play', () => !this.isYouTube && this.updatePlayState(true));
+        this.audio.addEventListener('pause', () => !this.isYouTube && this.updatePlayState(false));
+        this.audio.addEventListener('ended', () => !this.isYouTube && this.updatePlayState(false));
+        this.audio.addEventListener('timeupdate', () => !this.isYouTube && this.updateProgress());
+        this.audio.addEventListener('loadedmetadata', () => !this.isYouTube && this.updateDuration());
+        
+        this.progressContainer.addEventListener('click', (e) => this.seek(e));
     }
 
-    initializeYouTubeImport() {
-        const importBtn = document.getElementById('import-video');
-        const urlInput = document.getElementById('video-url');
-        const popup = document.getElementById('youtube-popup');
-        const closeBtn = document.getElementById('close-popup');
-        const importTrackBtn = document.getElementById('import-track-btn');
+    handleFileUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
 
-        if (!importBtn || !urlInput || !popup || !closeBtn || !importTrackBtn) {
-            console.error('YouTube import elements not found');
-            return;
-        }
+        // Update track info
+        this.trackName.textContent = file.name.replace(/\.[^/.]+$/, "");
+        this.trackArtist.textContent = 'Local File';
 
-        importTrackBtn.addEventListener('click', () => {
-            popup.style.display = 'flex';
-        });
+        // Create object URL for the audio file
+        const audioUrl = URL.createObjectURL(file);
+        this.audio.src = audioUrl;
+        
+        // Auto-play the uploaded file
+        this.audio.play();
+    }
 
-        closeBtn.addEventListener('click', () => {
-            popup.style.display = 'none';
-            urlInput.value = '';
-        });
-
-        popup.addEventListener('click', (e) => {
-            if (e.target === popup) {
-                popup.style.display = 'none';
-                urlInput.value = '';
-            }
-        });
-
-        importBtn.addEventListener('click', async () => {
-            const url = urlInput.value.trim();
-            if (!url) {
-                alert('Please enter a YouTube URL');
-                return;
-            }
-
-            const videoId = this.getYouTubeVideoId(url);
+    async handleYouTubeLink(url) {
+        try {
+            const videoId = this.extractVideoID(url);
             if (!videoId) {
-                alert('Please enter a valid YouTube URL');
-                return;
+                throw new Error('Invalid YouTube URL');
             }
 
-            try {
-                importBtn.disabled = true;
-                const response = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${videoId}`);
-                if (!response.ok) throw new Error('Failed to fetch video info');
-                
-                const data = await response.json();
+            // Get video info
+            const response = await fetch(`https://noembed.com/embed?url=${url}`);
+            const data = await response.json();
 
-                if (!this.player) {
-                    this.createYouTubePlayer(videoId);
-                } else {
-                    this.player.loadVideoById(videoId);
-                }
+            // Update track info
+            this.trackName.textContent = data.title;
+            this.trackArtist.textContent = data.author_name;
+            this.trackImage.src = `https://img.youtube.com/vi/${videoId}/0.jpg`;
 
-                this.trackName.textContent = data.title || 'Unknown Title';
-                this.trackArtist.textContent = data.author_name || 'Unknown Artist';
-                this.trackImage.src = `https://img.youtube.com/vi/${videoId}/0.jpg`;
-                this.currentTrack = videoId;
+            // Switch to YouTube mode
+            this.isYouTube = true;
+            this.audio.pause();
 
-                urlInput.value = '';
-                popup.style.display = 'none';
-            } catch (error) {
-                console.error('Error importing track:', error);
-                alert('Error importing track. Please try again.');
-            } finally {
-                importBtn.disabled = false;
+            // Create or update YouTube player
+            if (this.ytPlayer) {
+                this.ytPlayer.loadVideoById(videoId);
+            } else {
+                this.createYouTubePlayer(videoId);
             }
-        });
+
+            this.linkInput.value = '';
+        } catch (error) {
+            console.error('Error handling YouTube link:', error);
+            alert('Could not load YouTube video. Please try another link.');
+        }
     }
 
     createYouTubePlayer(videoId) {
-        // Remove existing player if it exists
-        const existingPlayer = document.getElementById('youtube-player');
-        if (existingPlayer) {
-            existingPlayer.remove();
-        }
-
-        const playerDiv = document.createElement('div');
-        playerDiv.id = 'youtube-player';
-        playerDiv.style.display = 'none';
-        document.body.appendChild(playerDiv);
-
-        try {
-            this.player = new YT.Player('youtube-player', {
+        if (window.YT && window.YT.Player) {
+            this.ytPlayer = new YT.Player('yt-player', {
                 height: '0',
                 width: '0',
                 videoId: videoId,
                 playerVars: {
-                    autoplay: 1,
-                    controls: 0,
-                    disablekb: 1,
-                    enablejsapi: 1,
-                    modestbranding: 1,
-                    playsinline: 1,
-                    rel: 0
+                    'playsinline': 1,
+                    'controls': 0
                 },
                 events: {
-                    onReady: (event) => {
-                        event.target.setVolume(this.volumeSlider.value);
-                        this.updatePlayerState();
-                    },
-                    onStateChange: (event) => {
-                        this.updatePlayerState();
-                    },
-                    onError: (event) => {
-                        console.error('YouTube player error:', event.data);
-                        alert('Error playing video. Please try another URL.');
+                    'onStateChange': (event) => this.onYouTubeStateChange(event),
+                    'onReady': () => {
+                        this.ytPlayer.playVideo();
+                        this.updateVolume(this.volumeSlider.value);
                     }
                 }
             });
-        } catch (error) {
-            console.error('Error creating YouTube player:', error);
-            alert('Error creating player. Please refresh the page and try again.');
         }
     }
 
-    updatePlayerState() {
-        if (!this.player) return;
-
-        try {
-            const state = this.player.getPlayerState();
-            this.isPlaying = state === YT.PlayerState.PLAYING;
-            if (this.playBtn) {
-                this.playBtn.innerHTML = this.isPlaying ? 
-                    '<i class="fas fa-pause"></i>' : 
-                    '<i class="fas fa-play"></i>';
-            }
-        } catch (error) {
-            console.error('Error updating player state:', error);
+    onYouTubeStateChange(event) {
+        switch(event.data) {
+            case YT.PlayerState.PLAYING:
+                this.updatePlayState(true);
+                this.startYouTubeProgress();
+                break;
+            case YT.PlayerState.PAUSED:
+            case YT.PlayerState.ENDED:
+                this.updatePlayState(false);
+                if (this.progressInterval) {
+                    clearInterval(this.progressInterval);
+                }
+                break;
         }
+    }
+
+    startYouTubeProgress() {
+        if (this.progressInterval) clearInterval(this.progressInterval);
+        this.progressInterval = setInterval(() => {
+            if (this.isYouTube && this.ytPlayer) {
+                const duration = this.ytPlayer.getDuration();
+                const currentTime = this.ytPlayer.getCurrentTime();
+                const progress = (currentTime / duration) * 100;
+                
+                this.progressBar.style.width = `${progress}%`;
+                this.currentTime.textContent = this.formatTime(currentTime);
+            }
+        }, 1000);
+    }
+
+    extractVideoID(url) {
+        const regExp = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#&?]*).*/;
+        const match = url.match(regExp);
+        return (match && match[7].length === 11) ? match[7] : null;
     }
 
     togglePlay() {
-        if (!this.player) return;
-
-        try {
+        if (this.isYouTube && this.ytPlayer) {
             if (this.isPlaying) {
-                this.player.pauseVideo();
+                this.ytPlayer.pauseVideo();
             } else {
-                this.player.playVideo();
+                this.ytPlayer.playVideo();
             }
-        } catch (error) {
-            console.error('Error toggling play state:', error);
-            alert('Error controlling playback. Please refresh the page.');
+        } else if (this.audio.src) {
+            if (this.isPlaying) {
+                this.audio.pause();
+            } else {
+                this.audio.play();
+            }
         }
+    }
+
+    updatePlayState(isPlaying) {
+        this.isPlaying = isPlaying;
+        this.playBtn.innerHTML = isPlaying ? 
+            '<i class="fas fa-pause"></i>' : 
+            '<i class="fas fa-play"></i>';
     }
 
     updateVolume(value) {
-        if (!this.player) return;
-
-        try {
-            this.player.setVolume(value);
-        } catch (error) {
-            console.error('Error updating volume:', error);
-        }
+        this.audio.volume = value / 100;
     }
 
-    getYouTubeVideoId(url) {
-        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-        const match = url.match(regExp);
-        return (match && match[2].length === 11) ? match[2] : null;
+    updateProgress() {
+        const progress = (this.audio.currentTime / this.audio.duration) * 100;
+        this.progressBar.style.width = `${progress}%`;
+        this.currentTime.textContent = this.formatTime(this.audio.currentTime);
+    }
+
+    updateDuration() {
+        this.duration.textContent = this.formatTime(this.audio.duration);
+    }
+
+    seek(event) {
+        const rect = this.progressContainer.getBoundingClientRect();
+        const pos = (event.clientX - rect.left) / rect.width;
+        this.audio.currentTime = pos * this.audio.duration;
+    }
+
+    formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${mins}:${secs.toString().padStart(2, '0')}`;
     }
 }
 
-// Initialize the player when the YouTube API is ready
-window.onYouTubeIframeAPIReady = () => {
+// Initialize the player when the document is ready
+document.addEventListener('DOMContentLoaded', () => {
     window.audioPlayer = new AudioPlayer();
-};
+});

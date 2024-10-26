@@ -12,6 +12,7 @@
         <script src="index.js"></script>
         <script src="https://sdk.scdn.co/spotify-player.js"></script>
         <script src="https://connect.soundcloud.com/sdk/sdk-3.3.2.js"></script>
+        <script src="https://www.youtube.com/iframe_api"></script>
     
         <script src="audio/audioplayer.js"></script>
     
@@ -71,7 +72,7 @@
             <span id="sliderValueBedroom" class="sliderValue">Intensitat: 50%</span>
     
     
-        <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 29.5px; transform: translate(105.9px);"></div>
+        <div style="background-color: #0a0a0a; grid-area: 1/7/8/8; z-index: 1; width: 20px; transform: translate(105.9px);"></div>
         <div  id="pickerBedroom" class="picker"></div>
     
     
@@ -135,15 +136,22 @@
     
 
 
-    <div id="audio-player" class="player">
+    <div id="audio-player" class="player1">
         <div class="player-content">
-            <div class="now-playing">
+            <div class="album-art-container">
                 <img id="current-track-image" src="https://i.imgur.com/NvnMUTt.png" alt="Album Art">
-                <div class="track-info">
-                    <div id="current-track-name">No track selected</div>
-                    <div id="current-track-artist">No artist</div>
+                <input type="file" id="audio-upload" accept="audio/*" class="file-input">
+                <div class="upload-overlay">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Escull un fitxer per reproduir</span>
                 </div>
             </div>
+            
+            <div class="track-info">
+                <div id="current-track-name">No hi ha una cançó seleccionada</div>
+                <div id="current-track-artist">Carrega una cançó per començar</div>
+            </div>
+
             <div class="progress">
                 <span id="current-time">0:00</span>
                 <div class="progress-bar">
@@ -151,18 +159,10 @@
                 </div>
                 <span id="duration">0:00</span>
             </div>
+
             <div class="controls">
-                <button id="prev-btn" class="control-button">
-                    <i class="fas fa-backward"></i>
-                </button>
                 <button id="play-btn" class="control-button">
                     <i class="fas fa-play"></i>
-                </button>
-                <button id="next-btn" class="control-button">
-                    <i class="fas fa-forward"></i>
-                </button>
-                <button id="import-track-btn" class="control-button">
-                    <i class="fas fa-plus"></i>
                 </button>
                 <div class="volume-control">
                     <i class="fas fa-volume-up"></i>
@@ -174,13 +174,13 @@
 
     <div id="youtube-popup" class="popup-overlay">
         <div class="popup-content">
-            <h3>Import YouTube Track</h3>
-            <input type="text" id="video-url" placeholder="Paste YouTube video URL here">
+            <h3>Importar vídeo de YouTube</h3>
+            <input type="text" id="video-url" placeholder="Enllaça el vídeo a importar">
             <div class="popup-buttons">
                 <button id="import-video" class="import-button">
-                    <i class="fab fa-youtube"></i> Import
+                    <i class="fab fa-youtube"></i> Importar
                 </button>
-                <button id="close-popup" class="close-button">Cancel</button>
+                <button id="close-popup" class="close-button">Cancel·lar</button>
             </div>
         </div>
     </div>
