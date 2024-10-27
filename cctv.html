@@ -3,44 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
+    <title>Càmeres</title>
     <link rel="stylesheet" href="style2.css" />
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
+
+
+
+        .camera-container {
+            border: 5px solid #444;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            grid-area: 2/3/11/14;
+            margin-bottom: 25px;
+            margin-top: 15px;
+            color: white;
+            font-family: Karla;
+        }
+
+
+        .camera-status {
+            margin-bottom: 20px;
+            color: white;
+            font-family: Karla;
+        }
+
+        .slider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+            margin-top: 600px;
+
+        }
+
+        .slider button {
+            background-color: #444;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 0 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+
+        }
+
+        .slider button:hover {
+            background-color: #666;
+        }
+
+        .time-code {
+            margin-top: 10px;
+            font-size: 18px;
+            color: white;
+
+        }
     </style>
 </head>
 <body>
-    
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index.html">Control</a>
+        <a href="consum.html">Consum</a>
+        <a href="automatitzacions.html">Automatitzacions</a>
+    </div>
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
+        <span style="font-size:30px;cursor:pointer;color: white;grid-area: 1/1/2/2;margin: 30px;" onclick="openNav()">&#9776;</span>
     <ul id="bedrooms">
-        <li ><a id="el1" href="index(3).html">Sala d'estar</a></li>
+        <li ><a id="el1" href="index.html">Sala d'estar</a></li>
         <li ><a id="el2" href="habitacio.html">Habitació</a></li>
         <li ><a id="el3" href="cuina.html">Cuina</a></li>
         <li ><a id="el4" href="oficina.html">Oficina</a></li>
     </ul>
 
+    <div class="camera-container">
+        <div class="camera-status">
+            <h2>Les càmeres estàn fora de servei</h2>
+        </div>
+        <div class="slider">
+            <button id="prevCamera" class="awesomefont-button"><i class="fas fa-chevron-left"></i></button>
+            <span id="currentCamera">Camera 1</span>
+            <button id="nextCamera" class="awesomefont-button"><i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="time-code">
+            <p>Hora: <span id="currentTime"></span></p>
+        </div>
+    </div>
 
-    <video width="auto" height="auto" style="grid-area: 1/1/10/10;" id="video" controls></video>
-<script>
-    if (Hls.isSupported()) {
-        var video = document.getElementById('video');
-        var hls = new Hls();
-        hls.loadSource('http://localhost:8080/stream.m3u8');
-        hls.attachMedia(video);
-        hls.on(Hls.Events.MANIFEST_PARSED, function () {
-            video.play();
+    <script>
+        const cameras = ['Camera 1', 'Camera 2', 'Camera 3'];
+        let currentIndex = 0;
+
+        function updateCameraDisplay() {
+            document.getElementById('currentCamera').innerText = cameras[currentIndex];
+        }
+
+        document.getElementById('prevCamera').addEventListener('click', () => {
+            currentIndex = (currentIndex > 0) ? currentIndex - 1 : cameras.length - 1;
+            updateCameraDisplay();
         });
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        video.src = 'http://localhost:8080/stream.m3u8';
-        video.addEventListener('canplay', function () {
-            video.play();
+
+        document.getElementById('nextCamera').addEventListener('click', () => {
+            currentIndex = (currentIndex < cameras.length - 1) ? currentIndex + 1 : 0;
+            updateCameraDisplay();
         });
-    }
-</script>
+
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString();
+            document.getElementById('currentTime').innerText = timeString;
+        }
+
+        setInterval(updateTime, 1000);
+        updateCameraDisplay();
+    </script>
 
 </body>
-
 </html>
-
