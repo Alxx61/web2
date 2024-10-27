@@ -486,16 +486,16 @@ body {
 }
 
 .rs-control .rs-range-color {
-    background-color: #56bdff;
+    background-color: #8cb8c8;
 }
 .rs-control .rs-path-color {
     background-color: #ffffff;
 }
 .rs-control .rs-handle {
-    background-color: #1f283f;
+    background-color: #000000;
 }
 .rs-control .rs-bg-color {
-    background-color: #ffffff;
+    background-color: white;
 }
 
 .quickactions {

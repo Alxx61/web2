@@ -10,26 +10,14 @@ document.addEventListener('DOMContentLoaded', function () {
     $("#slider").roundSlider({
         sliderType: "min-range",
         handleShape: "round",
-        width: 20,
-        radius: 116,
-        value: 21,
-        lineCap: "round",
-        min: "15",
-        max: "32",
-        startAngle: 170,
-        endAngle: "+200",
-        change: function(args) {
-            updateTemperature(args.value);
-            // Send to server
-            fetch('http://localhost:30010/remote/preset/Temperature/function/SetTemperature', {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    Parameters: { temperature: args.value },
-                    GenerateTransaction: true
-                })
-            }).catch(error => console.error('Error:', error));
-        }
+        width: 22,
+        radius: 100,
+        value: 100,
+        startAngle: 173,
+        endAngle: "+193",
+        max: "35",
+        min: "13",
+        handleSize: "+2"
     });
 
     // Quick action buttons

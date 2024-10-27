@@ -7,14 +7,15 @@
     <link rel="icon" type="image/png" href="https://img.icons8.com/emoji/48/house-emoji.png">
 
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@jaames/iro@5"></script> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>                            
-    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />                         
+    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
-    <script src="round-slider.bundle.js" type="module"></script>
 
+    
+    <link href="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
     <script src="index.js"></script>
 
 
@@ -99,7 +100,7 @@
     <div id="slider" style="grid-area: 2/2/3/4; z-index: 0; width: 100%; transform: translate(80px, -80px);">
         <input id="temperatureSlider" type="text" value="13" />
     </div>
-
+    <script></script>
     <h3 class="title" style="grid-area: 4/1/5/5;"> Accions ràpides</h3>
     <div class="quickactions">
         <button id="fred" class="action-button">
@@ -117,31 +118,7 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/round-slider@1.6.1/dist/roundslider.min.js"></script>
-<script>
-    $(function() {
-        $("#temperatureSlider").roundSlider({
-            radius: 100,
-            width: 20,
-            handleSize: "+20",
-            minValue: 13,
-            maxValue: 32,
-            value: 13,
-            startAngle: 180,
-            endAngle: 360,
-            sliderType: "min-range",
-            circleShape: "half",
-            tooltipFormat: function(args) {
-                return args.value + "°C";
-            }
-        });
 
-        $("#temperatureSlider").on("change", function (e) {
-            // Handle temperature change
-            console.log("Temperature set to: " + e.value);
-        });
-    });
-</script>
 
 
 
