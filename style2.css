@@ -31,7 +31,7 @@ body {
     display: grid;
     grid-gap: 10px;
     background-color: #0a0a0a;
-    cursor: url('https://img.icons8.com/material-sharp/24/000000/blue-pointer.png'), auto;
+
 }
 
 #bigone {
@@ -1177,6 +1177,7 @@ background-color: red;
     padding: 20px;
     display: flex;
     flex-direction: column;
+    height: 290px;
 }
 
 .flex-devices .title {
@@ -1189,7 +1190,6 @@ background-color: red;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    padding: 10px;
 }
 
 .device-container {
@@ -1201,6 +1201,9 @@ background-color: red;
     align-items: center;
     gap: 15px;  /* Added gap between elements */
     transition: background-color 0.3s ease;
+    width: 70%;
+    transform: translate(50px, 0px);
+    height: 70%;
 }
 
 .device-container:hover {

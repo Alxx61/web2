@@ -12,12 +12,82 @@ document.addEventListener('DOMContentLoaded', function () {
         handleShape: "round",
         width: 20,
         radius: 116,
-        value: 32,
+        value: 21,
         lineCap: "round",
         min: "15",
         max: "32",
         startAngle: 170,
-        endAngle: "+200"
+        endAngle: "+200",
+        change: function(args) {
+            updateTemperature(args.value);
+            // Send to server
+            fetch('http://localhost:30010/remote/preset/Temperature/function/SetTemperature', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Parameters: { temperature: args.value },
+                    GenerateTransaction: true
+                })
+            }).catch(error => console.error('Error:', error));
+        }
+    });
+
+    // Quick action buttons
+    $("#fred").click(function() {
+        $("#slider").roundSlider("setValue", 18);
+        updateTemperature(18);
+        highlightButton(this);
+        // Send to server
+        fetch('http://localhost:30010/remote/preset/Temperature/function/SetMode', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Parameters: { mode: "cool" },
+                GenerateTransaction: true
+            })
+        }).catch(error => console.error('Error:', error));
+    });
+
+    $("#calent").click(function() {
+        $("#slider").roundSlider("setValue", 24);
+        updateTemperature(24);
+        highlightButton(this);
+        // Send to server
+        fetch('http://localhost:30010/remote/preset/Temperature/function/SetMode', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                Parameters: { mode: "heat" },
+                GenerateTransaction: true
+            })
+        }).catch(error => console.error('Error:', error));
+    });
+
+    $("#ventilar").click(function() {
+        $(this).toggleClass('active');
+        if ($(this).hasClass('active')) {
+            $(this).find('i').addClass('fa-spin');
+            // Send fan on command
+            fetch('http://localhost:30010/remote/preset/Temperature/function/SetFan', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Parameters: { state: "on" },
+                    GenerateTransaction: true
+                })
+            }).catch(error => console.error('Error:', error));
+        } else {
+            $(this).find('i').removeClass('fa-spin');
+            // Send fan off command
+            fetch('http://localhost:30010/remote/preset/Temperature/function/SetFan', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    Parameters: { state: "off" },
+                    GenerateTransaction: true
+                })
+            }).catch(error => console.error('Error:', error));
+        }
     });
 
     //selector de color https://iro.js.org/guide.html
