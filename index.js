@@ -154,7 +154,7 @@ function formatDate(date) {
 // Constants
 const WEATHER_API = {
     BASE_URL: 'https://api.openweathermap.org/data/2.5/weather',
-    KEY: 'API'
+    KEY: 'e812d8b7b7a19bde90c3dd1e3c522c89'
 };
 
 class WeatherApp {
