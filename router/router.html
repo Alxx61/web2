@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control del Router</title>
+    <link rel="stylesheet" href="router.css">
+    <link rel="stylesheet" href="style2.css">
+    <script src="index.js"></script>
+</head>
+<body>
+    <div class="back-button">
+        <a href="../index.html" class="return-btn">
+            <i class="fas fa-arrow-left"></i>
+            <span>Tornar a l'Inici</span>
+        </a>
+    </div>
+
+    <div class="container">
+        <h1>Control del Router</h1>
+        
+        <div class="status-card">
+            <h2>Estat Actual</h2>
+            <div class="status-indicator">
+                <span class="status-dot"></span>
+                <span id="connectionStatus">Connectat</span>
+            </div>
+        </div>
+
+        <div class="control-card">
+            <h2>Controls</h2>
+            <button id="restartBtn" class="btn">Reiniciar Router</button>
+            <button id="resetBtn" class="btn danger">Restablir Configuració</button>
+        </div>
+
+        <div class="info-card">
+            <h2>Informació del Router</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Adreça IP:</label>
+                    <span id="ipAddress">192.168.1.1</span>
+                </div>
+                <div class="info-item">
+                    <label>Nom del Router:</label>
+                    <span id="routerName">Router Principal</span>
+                </div>
+                <div class="info-item">
+                    <label>Temps en Línia:</label>
+                    <span id="uptime">2 dies, 3 hores</span>
+                </div>
+                <div class="info-item">
+                    <label>Velocitat Actual:</label>
+                    <span id="speed">300 Mbps</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://kit.fontawesome.com/your-font-awesome-kit.js"></script>
+    <script src="router.js"></script>
+</body>
+</html>

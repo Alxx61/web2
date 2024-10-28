@@ -81,21 +81,72 @@
     
         <img id="buttontemp" src="https://drive.google.com/thumbnail?id=1MDOsYjDrhiQ0yMtas3QdVI1DwXj3pcH2">
         <img style="grid-area: 1/1/2/10; z-index: 1;" width="100%" height="170px" src="https://i.imgur.com/3O4SiCt.png">
-        <div style="grid-area: 1/2/3/4; z-index: 0; width: 100%; transform: translate(80px, 80px);" id="slider"></div>
-        <h3 class="title" style="grid-area: 4/1/5/5;"> Accions ràpides</h3>
+    
+        <div id="slider" style="grid-area: 2/2/3/4; z-index: 0; width: 100%; transform: translate(80px, -80px);">
+            <input id="temperatureSlider" type="text" value="13" />
+        </div>
+        <script>
+        $("#temperatureSlider").roundSlider({
+            sliderType: "min-range",
+            handleShape: "round",
+            width: 22,
+            radius: 100,
+            value: 100,
+            startAngle: 167,
+            endAngle: "+203",
+            max: "35",
+            min: "13",
+            handleSize: "+2"
+        });
+        </script>
+        <h3 class="title" style=" transform: translate(0px,-10px); grid-area: 4/1/5/5; "> Accions ràpides</h3>
         <div class="quickactions">
             <button id="fred" class="action-button">
                 <i class="fas fa-snowflake"></i>
                 <span>Fred</span>
+                <span class="temp-preset">18°C</span>
             </button>
             <button id="calent" class="action-button">
                 <i class="fas fa-fire"></i>
                 <span>Calent</span>
+                <span class="temp-preset">24°C</span>
             </button>
             <button id="ventilar" class="action-button">
                 <i class="fas fa-fan"></i>
                 <span>Ventilar</span>
+                <span class="mode-text">20 min</span>
             </button>
+        </div>
+    
+        <div class="temp-stats">
+            <div class="stat-item">
+                <i class="fas fa-tint"></i>
+                <span>Humitat: 45%</span>
+            </div>
+            <div class="stat-item">
+                <i class="fas fa-wind"></i>
+                <span>Velocitat: 2</span>
+            </div>
+        </div>
+    
+        <div class="mode-selector">
+            <button class="mode-button active">
+                <i class="fas fa-moon"></i>
+                <span>Nit</span>
+            </button>
+            <button class="mode-button">
+                <i class="fas fa-sun"></i>
+                <span>Dia</span>
+            </button>
+            <button class="mode-button">
+                <i class="fas fa-leaf"></i>
+                <span>Eco</span>
+            </button>
+        </div>
+    
+        <div class="schedule-preview">
+            <i class="fas fa-clock"></i>
+            <span>Proper canvi: 22:00 (Mode nit)</span>
         </div>
     </div>
 

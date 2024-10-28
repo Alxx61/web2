@@ -154,7 +154,7 @@ function formatDate(date) {
 // Constants
 const WEATHER_API = {
     BASE_URL: 'https://api.openweathermap.org/data/2.5/weather',
-    KEY: 'API KEY' // Replace with your API key
+    KEY: 'API'
 };
 
 class WeatherApp {
@@ -165,21 +165,24 @@ class WeatherApp {
 
     init() {
         this.weatherNumber = document.getElementById("weathernumber");
-        this.weatherText = document.getElementById("weathertext");
+        this.weatherText = document.getElementById("weathertext"); 
         this.sun3D = document.getElementById("sun3D");
         this.cloud3D = document.getElementById("cloud3D");
+        this.rainImg = document.getElementById("rainImg"); // Was missing this element
         
         if (!this.weatherNumber || !this.weatherText) {
             console.error('Required DOM elements not found');
             return;
         }
 
+        // Call getWeather initially and then every 30 minutes
         this.getWeather();
+        setInterval(() => this.getWeather(), 30 * 60 * 1000);
     }
 
     async getWeather() {
         try {
-            const url = `${WEATHER_API.BASE_URL}?q=${encodeURIComponent(this.city)}&appid=${WEATHER_API.KEY}&units=metric`;
+            const url = `${WEATHER_API.BASE_URL}?q=${encodeURIComponent(this.city)}&appid=${WEATHER_API.KEY}&units=metric&lang=ca`; // Added lang=ca for Catalan
             
             const response = await fetch(url);
             if (!response.ok) {
@@ -187,6 +190,7 @@ class WeatherApp {
             }
 
             const data = await response.json();
+            console.log('Weather data:', data); // Debug log
             this.updateWeatherDisplay(data);
         } catch (error) {
             console.error('Error fetching weather:', error);
@@ -195,31 +199,35 @@ class WeatherApp {
     }
 
     updateWeatherDisplay(data) {
-        // Update temperature (already in Celsius due to units=metric parameter)
-        const temperature = Math.round(data.main.temp);
-        this.weatherNumber.innerHTML = `${temperature}°C`;
+        if (!data.main || !data.weather || !data.weather[0]) {
+            console.error('Invalid weather data format:', data);
+            this.handleError();
+            return;
+        }
 
-        // Update weather description
+        const temperature = Math.round(data.main.temp);
+        this.weatherNumber.textContent = `${temperature}°`;
+
         const description = data.weather[0].description;
-        this.weatherText.innerHTML = this.generateWeatherText(description);
+        this.weatherText.textContent = this.generateWeatherText(description);
     }
 
     generateWeatherText(description) {
-        // Hide both 3D elements initially
         this.hideAllWeatherIcons();
 
         const lowerDescription = description.toLowerCase();
         
-        if (lowerDescription.includes("clear")) {
+        if (lowerDescription.includes("clear") || lowerDescription.includes("sol")) {
             if (this.sun3D) this.sun3D.style.display = "block";
-            return "Avui el cel estarà serè.";
+            return "Avui el cel estarà serè";
         }
-        if (lowerDescription.includes("cloud")) {
+        if (lowerDescription.includes("cloud") || lowerDescription.includes("núvol")) {
             if (this.cloud3D) this.cloud3D.style.display = "block";
-            return "Avui el cel estarà ennuvolat.";
+            return "Avui el cel estarà ennuvolat";
         }
-        if (lowerDescription.includes("rain")) {
-            return "Avui probablement hi haurà precipitació.";
+        if (lowerDescription.includes("rain") || lowerDescription.includes("pluja")) {
+            if (this.rainImg) this.rainImg.style.display = "block";
+            return "Avui probablement hi haurà precipitació";
         }
         return description;
     }
@@ -227,11 +235,12 @@ class WeatherApp {
     hideAllWeatherIcons() {
         if (this.sun3D) this.sun3D.style.display = "none";
         if (this.cloud3D) this.cloud3D.style.display = "none";
+        if (this.rainImg) this.rainImg.style.display = "none"; // Fixed reference
     }
 
     handleError() {
-        if (this.weatherNumber) this.weatherNumber.innerHTML = 'N/A';
-        if (this.weatherText) this.weatherText.innerHTML = 'No s\'han pogut obtenir les dades meteorològiques.';
+        this.weatherNumber.textContent = 'N/A';
+        this.weatherText.textContent = 'No s\'han pogut obtenir les dades meteorològiques';
         this.hideAllWeatherIcons();
     }
 }
@@ -1169,453 +1178,55 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-// Automation Panel Functionality
-document.addEventListener('DOMContentLoaded', function() {
-    const addRuleBtn = document.getElementById('addRuleBtn');
-    const modal = document.getElementById('newRuleModal');
-    const saveRuleBtn = document.getElementById('saveRule');
-    const cancelRuleBtn = document.getElementById('cancelRule');
-    const triggerType = document.getElementById('triggerType');
-    const actionType = document.getElementById('actionType');
-    const rulesList = document.getElementById('rulesList');
-
-    // Show modal when clicking Add Rule button
-    addRuleBtn.addEventListener('click', () => {
-        modal.style.display = 'block';
-        updateTriggerOptions();
-        updateActionOptions();
-    });
-
-    // Hide modal when clicking Cancel
-    cancelRuleBtn.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
-    // Handle trigger type changes
-    triggerType.addEventListener('change', updateTriggerOptions);
-    actionType.addEventListener('change', updateActionOptions);
-
-    function updateTriggerOptions() {
-        const triggerOptions = document.getElementById('triggerOptions');
-        const selectedTrigger = triggerType.value;
+// Wait for the document to be ready
+$(document).ready(function() {
+    // Quick action buttons handling
+    const actionButtons = $('.action-button');
+    
+    actionButtons.click(function() {
+        const button = $(this);
         
-        let optionsHTML = '';
+        // Add active class
+        button.addClass('active');
         
-        switch(selectedTrigger) {
-            case 'time':
-                optionsHTML = `
-                    <input type="time" id="triggerTime" class="rule-input">
-                    <div class="day-selector">
-                        <label><input type="checkbox" value="mon"> Dilluns</label>
-                        <label><input type="checkbox" value="tue"> Dimarts</label>
-                        <label><input type="checkbox" value="wed"> Dimecres</label>
-                        <label><input type="checkbox" value="thu"> Dijous</label>
-                        <label><input type="checkbox" value="fri"> Divendres</label>
-                        <label><input type="checkbox" value="sat"> Dissabte</label>
-                        <label><input type="checkbox" value="sun"> Diumenge</label>
-                    </div>
-                `;
-                break;
-            case 'temperature':
-                optionsHTML = `
-                    <div class="condition-input">
-                        <select id="tempCondition" class="rule-select">
-                            <option value="above">Per sobre de</option>
-                            <option value="below">Per sota de</option>
-                        </select>
-                        <input type="number" id="tempValue" class="rule-input" min="0" max="40" step="0.5">
-                        <span>°C</span>
-                    </div>
-                `;
-                break;
-            case 'motion':
-                optionsHTML = `
-                    <select id="motionLocation" class="rule-select">
-                        <option value="living">Sala d'estar</option>
-                        <option value="kitchen">Cuina</option>
-                        <option value="bedroom">Habitació</option>
-                        <option value="bathroom">Bany</option>
-                    </select>
-                    <select id="motionCondition" class="rule-select">
-                        <option value="detected">Detectat moviment</option>
-                        <option value="notDetected">No detectat moviment per</option>
-                    </select>
-                    <input type="number" id="motionDuration" class="rule-input" min="1" max="60">
-                    <span>minuts</span>
-                `;
-                break;
-            case 'light':
-                optionsHTML = `
-                    <div class="condition-input">
-                        <select id="lightCondition" class="rule-select">
-                            <option value="above">Per sobre de</option>
-                            <option value="below">Per sota de</option>
-                        </select>
-                        <input type="number" id="lightValue" class="rule-input" min="0" max="100" step="1">
-                        <span>%</span>
-                    </div>
-                `;
-                break;
-        }
-        
-        triggerOptions.innerHTML = optionsHTML;
-    }
-
-    function updateActionOptions() {
-        const actionOptions = document.getElementById('actionOptions');
-        const selectedAction = actionType.value;
-        
-        let optionsHTML = '';
-        
-        switch(selectedAction) {
-            case 'lights':
-                optionsHTML = `
-                    <select id="lightRoom" class="rule-select">
-                        <option value="living">Sala d'estar</option>
-                        <option value="kitchen">Cuina</option>
-                        <option value="bedroom">Habitació</option>
-                        <option value="bathroom">Bany</option>
-                    </select>
-                    <select id="lightAction" class="rule-select">
-                        <option value="on">Encendre</option>
-                        <option value="off">Apagar</option>
-                        <option value="dim">Ajustar intensitat</option>
-                    </select>
-                    <div id="dimmerControl" style="display: none;">
-                        <input type="range" min="0" max="100" value="50" class="rule-slider">
-                        <span>50%</span>
-                    </div>
-                `;
-                break;
-            case 'blinds':
-                optionsHTML = `
-                    <select id="blindRoom" class="rule-select">
-                        <option value="living">Sala d'estar</option>
-                        <option value="bedroom">Habitació</option>
-                    </select>
-                    <select id="blindAction" class="rule-select">
-                        <option value="open">Obrir</option>
-                        <option value="close">Tancar</option>
-                        <option value="partial">Ajustar</option>
-                    </select>
-                    <div id="blindControl" style="display: none;">
-                        <input type="range" min="0" max="100" value="50" class="rule-slider">
-                        <span>50%</span>
-                    </div>
-                `;
-                break;
-            case 'thermostat':
-                optionsHTML = `
-                    <select id="thermostatMode" class="rule-select">
-                        <option value="heat">Calefacció</option>
-                        <option value="cool">Refrigeració</option>
-                        <option value="auto">Automàtic</option>
-                    </select>
-                    <input type="number" id="thermostatTemp" class="rule-input" min="15" max="30" step="0.5">
-                    <span>°C</span>
-                `;
-                break;
-            case 'appliance':
-                optionsHTML = `
-                    <select id="applianceType" class="rule-select">
-                        <option value="coffee">Cafetera</option>
-                        <option value="dishwasher">Rentavaixelles</option>
-                        <option value="washer">Rentadora</option>
-                        <option value="robot">Robot aspirador</option>
-                    </select>
-                    <select id="applianceAction" class="rule-select">
-                        <option value="start">Iniciar</option>
-                        <option value="stop">Aturar</option>
-                    </select>
-                `;
-                break;
-        }
-        
-        actionOptions.innerHTML = optionsHTML;
-        
-        // Add event listeners for special controls
-        if (selectedAction === 'lights') {
-            const lightAction = document.getElementById('lightAction');
-            const dimmerControl = document.getElementById('dimmerControl');
-            lightAction.addEventListener('change', () => {
-                dimmerControl.style.display = lightAction.value === 'dim' ? 'block' : 'none';
-            });
-        }
-        
-        if (selectedAction === 'blinds') {
-            const blindAction = document.getElementById('blindAction');
-            const blindControl = document.getElementById('blindControl');
-            blindAction.addEventListener('change', () => {
-                blindControl.style.display = blindAction.value === 'partial' ? 'block' : 'none';
-            });
-        }
-    }
-
-    // Save rule
-    saveRuleBtn.addEventListener('click', () => {
-        const rule = createRuleFromInputs();
-        addRuleToList(rule);
-        modal.style.display = 'none';
-    });
-
-    function createRuleFromInputs() {
-        // Create rule object based on form inputs
-        // This is a simplified version - you'll want to add more validation and data collection
-        return {
-            id: Date.now(),
-            trigger: {
-                type: triggerType.value,
-                // Add more trigger details based on type
-            },
-            action: {
-                type: actionType.value,
-                // Add more action details based on type
-            }
-        };
-    }
-
-    function addRuleToList(rule) {
-        const ruleCard = document.createElement('div');
-        ruleCard.className = 'rule-card';
-        ruleCard.innerHTML = `
-            <div class="rule-header">
-                <span class="rule-title">Nova Automatització</span>
-                <div class="rule-controls">
-                    <button class="rule-control-btn" onclick="editRule(${rule.id})">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="rule-control-btn" onclick="deleteRule(${rule.id})">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="rule-content">
-                <div class="rule-condition">
-                    <i class="fas fa-clock"></i> SI: ${formatTrigger(rule.trigger)}
-                </div>
-                <div class="rule-action">
-                    <i class="fas fa-magic"></i> LLAVORS: ${formatAction(rule.action)}
-                </div>
-            </div>
-        `;
-        
-        rulesList.appendChild(ruleCard);
-    }
-
-    function formatTrigger(trigger) {
-        // Format trigger description based on type
-        return `Condició: ${trigger.type}`;
-    }
-
-    function formatAction(action) {
-        // Format action description based on type
-        return `Acció: ${action.type}`;
-    }
-});
-
-// Global functions for rule management
-window.editRule = function(ruleId) {
-    console.log('Editing rule:', ruleId);
-    // Implement edit functionality
-};
-
-window.deleteRule = function(ruleId) {
-    const ruleElement = document.querySelector(`.rule-card[data-id="${ruleId}"]`);
-    if (ruleElement && confirm('Estàs segur que vols eliminar aquesta automatització?')) {
-        ruleElement.remove();
-    }
-};
-
-// ... (codi existent) ...
-
-function addRuleToList(rule) {
-    const ruleCard = document.createElement('div');
-    ruleCard.className = 'rule-card';
-    ruleCard.dataset.id = rule.id; // Afegim l'ID com a data attribute
-    ruleCard.innerHTML = `
-        <div class="rule-header">
-            <span class="rule-title">Nova Automatització</span>
-            <div class="rule-controls">
-                <button class="rule-control-btn edit-btn">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="rule-control-btn delete-btn">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        </div>
-        <div class="rule-content">
-            <div class="rule-condition">
-                <i class="fas fa-clock"></i> SI: ${formatTrigger(rule.trigger)}
-            </div>
-            <div class="rule-action">
-                <i class="fas fa-magic"></i> LLAVORS: ${formatAction(rule.action)}
-            </div>
-        </div>
-    `;
-
-    // Afegim els event listeners als botons
-    const editBtn = ruleCard.querySelector('.edit-btn');
-    const deleteBtn = ruleCard.querySelector('.delete-btn');
-
-    editBtn.addEventListener('click', () => editRule(rule));
-    deleteBtn.addEventListener('click', () => deleteRule(rule.id));
-
-    rulesList.appendChild(ruleCard);
-}
-
-// Funció per editar una regla
-function editRule(rule) {
-    // Mostrem el modal
-    const modal = document.getElementById('newRuleModal');
-    modal.style.display = 'block';
-
-    // Emplenem els camps amb les dades existents
-    const triggerType = document.getElementById('triggerType');
-    const actionType = document.getElementById('actionType');
-
-    triggerType.value = rule.trigger.type;
-    actionType.value = rule.action.type;
-
-    // Actualitzem les opcions
-    updateTriggerOptions();
-    updateActionOptions();
-
-    // Emplenem els camps específics segons el tipus de trigger i action
-    // ... (aquí pots afegir més lògica per emplenar camps específics) ...
-
-    // Modifiquem el comportament del botó de desar
-    const saveBtn = document.getElementById('saveRule');
-    saveBtn.onclick = () => {
-        // Guardem els canvis
-        const updatedRule = createRuleFromInputs();
-        updatedRule.id = rule.id; // Mantenim el mateix ID
-
-        // Eliminem la targeta antiga
-        const oldCard = document.querySelector(`.rule-card[data-id="${rule.id}"]`);
-        if (oldCard) {
-            oldCard.remove();
-        }
-
-        // Afegim la targeta actualitzada
-        addRuleToList(updatedRule);
-
-        // Tanquem el modal
-        modal.style.display = 'none';
-
-        // Restaurem el comportament original del botó de desar
-        saveBtn.onclick = () => {
-            const newRule = createRuleFromInputs();
-            addRuleToList(newRule);
-            modal.style.display = 'none';
-        };
-    };
-}
-
-// Funció per eliminar una regla
-function deleteRule(ruleId) {
-    const ruleCard = document.querySelector(`.rule-card[data-id="${ruleId}"]`);
-    if (ruleCard && confirm('Estàs segur que vols eliminar aquesta automatització?')) {
-        // Afegim una animació de desaparició
-        ruleCard.style.transition = 'all 0.3s ease';
-        ruleCard.style.opacity = '0';
-        ruleCard.style.transform = 'scale(0.8)';
-
-        // Eliminem l'element després de l'animació
+        // Remove active class after 2 seconds
         setTimeout(() => {
-            ruleCard.remove();
-        }, 300);
-    }
-}
+            button.removeClass('active');
+        }, 2000);
 
-// Funció millorada per crear una regla des dels inputs
-function createRuleFromInputs() {
-    const triggerType = document.getElementById('triggerType');
-    const actionType = document.getElementById('actionType');
+        // Handle specific button actions
+        if (button.attr('id') === 'fred') {
+            // Cold button actions
+            $('#temperatureSlider').roundSlider('setValue', 18);
+        } else if (button.attr('id') === 'calent') {
+            // Hot button actions
+            $('#temperatureSlider').roundSlider('setValue', 24);
+        } else if (button.attr('id') === 'ventilar') {
+            // Ventilation button actions
+            let timeLeft = 20 * 60; // 20 minutes in seconds
+            const originalText = button.find('.mode-text').text();
+            
+            const countdownInterval = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                button.find('.mode-text').text(
+                    `${minutes}:${seconds.toString().padStart(2, '0')}`
+                );
 
-    const rule = {
-        id: Date.now(),
-        trigger: {
-            type: triggerType.value,
-            options: {}
-        },
-        action: {
-            type: actionType.value,
-            options: {}
+                if (timeLeft <= 0) {
+                    clearInterval(countdownInterval);
+                    button.find('.mode-text').text(originalText);
+                }
+            }, 1000);
         }
-    };
+    });
 
-    // Recollim les opcions específiques segons el tipus de trigger
-    switch (triggerType.value) {
-        case 'time':
-            const time = document.getElementById('triggerTime')?.value;
-            const days = Array.from(document.querySelectorAll('.day-selector input:checked'))
-                .map(input => input.value);
-            rule.trigger.options = { time, days };
-            break;
-        case 'temperature':
-            rule.trigger.options = {
-                condition: document.getElementById('tempCondition')?.value,
-                value: document.getElementById('tempValue')?.value
-            };
-            break;
-        // ... (afegir més casos segons necessitat)
-    }
-
-    // Recollim les opcions específiques segons el tipus d'acció
-    switch (actionType.value) {
-        case 'lights':
-            rule.action.options = {
-                room: document.getElementById('lightRoom')?.value,
-                action: document.getElementById('lightAction')?.value,
-                intensity: document.getElementById('dimmerControl')?.querySelector('input')?.value
-            };
-            break;
-        case 'blinds':
-            rule.action.options = {
-                room: document.getElementById('blindRoom')?.value,
-                action: document.getElementById('blindAction')?.value,
-                position: document.getElementById('blindControl')?.querySelector('input')?.value
-            };
-            break;
-        // ... (afegir més casos segons necessitat)
-    }
-
-    return rule;
-}
-
-// Millorem les funcions de formatatge per mostrar més detalls
-function formatTrigger(trigger) {
-    let description = '';
-    switch (trigger.type) {
-        case 'time':
-            const days = trigger.options?.days?.join(', ') || 'tots els dies';
-            description = `a les ${trigger.options?.time || '00:00'} (${days})`;
-            break;
-        case 'temperature':
-            description = `temperatura ${trigger.options?.condition} ${trigger.options?.value}°C`;
-            break;
-        // ... (afegir més casos)
-        default:
-            description = trigger.type;
-    }
-    return description;
-}
-
-function formatAction(action) {
-    let description = '';
-    switch (action.type) {
-        case 'lights':
-            const intensity = action.options?.intensity ? ` al ${action.options.intensity}%` : '';
-            description = `${action.options?.action} llums ${action.options?.room}${intensity}`;
-            break;
-        case 'blinds':
-            const position = action.options?.position ? ` al ${action.options.position}%` : '';
-            description = `${action.options?.action} persianes ${action.options?.room}${position}`;
-            break;
-        // ... (afegir més casos)
-        default:
-            description = action.type;
-    }
-    return description;
-}
+    // Mode buttons handling
+    const modeButtons = $('.mode-button');
+    
+    modeButtons.click(function() {
+        modeButtons.removeClass('active');
+        $(this).addClass('active');
+    });
+});
